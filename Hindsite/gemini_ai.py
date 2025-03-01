@@ -13,7 +13,7 @@ def generate_hints(stock_data):
     hints = []
 
     prompt = f"""
-    Given the following companies and their stock prices:
+    Given the following companies and their previous headlines (if any):
     - COMPANY1: ${data["COMPANY1"]}
     - COMPANY2: ${data["COMPANY2"]}
     - COMPANY3: ${data["COMPANY3"]}
@@ -27,7 +27,9 @@ def generate_hints(stock_data):
 
     Generate short news headlines that may be randomly negative or positive on changes within the company.
     Usually either will be focused on staff misconduct, or new innovations, or any other form of common headline
-    that may be made about a company.
+    that may be made about a company. Each company may have previous headlines, if so make the new headline based off
+    previous ones, companies can learn from their previous mistakes or go further into failure, you decide. Then give 
+    a list of all the new headlines for each respective company.
     """
 
     try:
