@@ -11,29 +11,35 @@
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-        </div>
-
-        <div class="main">
-            <div class="main-box"></div>
-            <div class="main-box bottom-box">
-                <div></div>
-                <div class="buttons">
-                    <button></button>
-                    <button></button>
+        
+    
+        <div class="screen">
+            <div class="center">
+                <div class="top-box">
+                    <div class="radio-container">
+                        <div id="radio-placeholder"></div>
+                    </div>
+                    <div class="main-box"></div>
+                </div>
+                <div class="bottom-box">
+                    <div></div>
+                    <div class="buy-sell-buttons">
+                        <button>Buy</button>
+                        <button>Sell</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="news"></div>
+            <div class="news"></div>
+        </div>
     </div>
+    <script>
+        fetch('../templates/objects/company_radio.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('radio-placeholder').innerHTML = data;
+            });
+    </script>
 </body>
 </html>
 
