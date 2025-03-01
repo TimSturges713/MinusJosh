@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #7cff72;
+    background-color: #5a9156;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,7 +31,7 @@ body {
     width: 90%;
     aspect-ratio: 1/1;
     border: 2px solid black;
-    border-radius: 10px;
+    border-radius: 15px;
     background: white;
 }
 
@@ -56,7 +56,7 @@ body {
     border: 2px solid black;
     border-radius: 15px;
     background: white;
-    margin-left: 2%;
+    margin-left: 20px;
 }
 
 .bottom-box {
@@ -76,7 +76,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom:2%;
+    margin-bottom: 20px;
 }
 
 .radio-container {
@@ -104,16 +104,20 @@ body {
     border: 2px solid black;
     border-radius: 10px;
     background: white;
+    box-shadow: 5px,5px,5px,black;
 }
 
 .news {
-    flex: 1;
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     border: 2px solid black;
     border-radius: 15px;
     background: white;
     flex-basis: 0;
     flex-grow: 1;
-    margin-left: 2%;
+    margin-left: 20px;
 }
 
 @media (max-width: 768px) {
