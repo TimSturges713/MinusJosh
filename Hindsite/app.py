@@ -22,6 +22,7 @@ def start_game():
 @app.route("/get_game_data")
 def get_game_data():
     # Get stock prices for the next week
+    return
 
 # Buy stock
 @app.route("/buy", methods=["POST"])
