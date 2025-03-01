@@ -14,9 +14,9 @@ def generate_hints(stock_data):
 
     prompt = f"""
     Given the following stock price changes:
-    - TechCorp: ${data["techcorp"]}
-    - EcoEnergy: ${data["ecoenergy"]}
-    - HyperAuto: ${data["hyperauto"]}
+    - COMPANY1: ${data["COMPANY1"]}
+    - COMPANY2: ${data["COMPANY2"]}
+    - COMPANY3: ${data["COMPANY3"]}
 
     Generate short news headlines that hint at reasons for these changes.
     """
