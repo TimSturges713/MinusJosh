@@ -1,0 +1,52 @@
+.cr-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: transparent;
+    margin: 0;
+}
+
+.cr-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.cr-radio-group {
+    background: transparent;
+    padding: 10px;
+    height: 100%;
+}
+
+.cr-radio-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all;
+}
+
+.cr-radio-label:hover {
+    background-color: #e3e3e3;
+}
+
+.cr-hidden-input {
+    display: none;
+}
+
+.cr-hidden-input:checked + .icon {
+    fill: blue;
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.cr-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease-in-out;
+}
