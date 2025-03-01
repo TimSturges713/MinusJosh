@@ -9,7 +9,7 @@ load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMENI_KEY"))
 
 # Generate AI hints for stock price changes
-def generate_ai_hints(stock_data):
+def generate_hints(stock_data):
     hints = []
 
     prompt = f"""
