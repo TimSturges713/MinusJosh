@@ -43,21 +43,43 @@ def update_session():
     return jsonify({"message": "Session updated", "session": session})
 
 # Initialize session data
-def initialize_game(gamemode):
-    session["balance"] = 10000  # Starting balance
-    
-    match gamemode:
-        case _: # Default gamemode (normal)
-            com = ["techcorp", "ecoenergy", "hyperauto"]
+def initialize_game(gamemode, username):
+    session["current_period"] = 1
+    session["user"] = {
+    "username": username,
+    "balance": 10000,
+    "portfolio": {}
+    }
 
-    for company in com:
-        history_dict = {1: tuple((stock_value(company), []))}
-        random_int = random.randint(50, 100000)
-        session["companies"][company] = {"price": 100, "employee_number": random_int, "approval_rating": , "history": history_dict }
-        session["user"]["portfolio"][company] = { "amount": 0, "profit": 0 }
+    gemini_generate_companies()
 
-    session["current_period"] = 1  # Start at period 1
+    for company in session["companies"].keys():    
+        session["user"]["portfolio"][company] = { 
+                                            "amount": 0, 
+                                            "profit": 0 
+                                            }
 
+
+
+    ### Initialize companies and industries
+    # match gamemode:
+    #     case _: # Default gamemode (normal)   
+    #         industries = ["Technology", "Energy", "Automotive", "Healthcare", "Finance"]
+    #         com = ["TechCorp", "CyberSecure", "AIFrontier", "EcoEnergy", "GreenFusion", 
+    #         "HyperAuto", "DriveWorks", "MediHealth", "BioGenix", "FinTrust", "WealthWell"]
+    # session["companies"] = dict()
+    # for industry in industries:
+    #     session["industries"][industry] = dict()
+
+    # for company in com:
+    #     history_dict = {1: tuple((stock_value(company), []))}
+    #     random_employee = random.randint(50, 100000) # random employee size
+    #     session["companies"][company] = {
+    #                                     "price": 100, 
+    #                                     "employee_number": random_employee, 
+    #                                     "approval_rating": , 
+    #                                     "history": history_dict 
+    #                                     }
 
 
 # Menu page
@@ -74,8 +96,9 @@ def end_game():
 # Start a new game
 @app.route("/start_game", methods=["POST"])
 def start_game():
-    difficulty = request.form.get("gamemode", "difficulty")  # Get settings
-    initialize_game(difficulty)
+    gamemode = request.form.get("gamemode", "default")  # Get gamemode
+    username = request.form.get("username", "Player")  # Get username
+    initialize_game(gamemode, username)
     gamemode = "game.html" # Choose which gamemode to play (for now only default)
     return render_template(gamemode)
 
