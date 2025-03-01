@@ -13,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SESSION_KEY")  # Required for session handling
 
-## -------------------- SESSION FUNCTIONS --------------------
+## -------------------- SESSION DATA FUNCTIONS --------------------
 
 # to retrieve session data
 @app.route("/get_session", methods=["GET"])
@@ -134,6 +134,10 @@ def sell():
 def advance():
     if session["current_period"] < 10:
         session["current_period"] += 1
+        for company in session["companies"].keys():
+            session["companies"][company]["price"] = get_new_stock_price(company)
+            session["companies"][company]["history"][session["current_period"]] = tuple((session["companies"][company]["price"], get_headline(company)))
+
         return jsonify({"current_period": (session["current_period"] + 1), "session": session})
     else:
         return jsonify({"game_over": True, "final_balance": session["user"]["balance"]})
