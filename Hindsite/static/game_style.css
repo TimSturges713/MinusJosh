@@ -11,6 +11,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    font-family: 'Trebuchet MS', sans-serif;
 }
 
 .container {
@@ -34,12 +35,20 @@ body {
     background: white;
 }
 
-.main {
+.screen{
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.center{
+    flex-basis: 0;
+    flex-grow: 1;
     flex: 2;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 10px;
 }
 
 .main-box {
@@ -47,22 +56,49 @@ body {
     border: 2px solid black;
     border-radius: 15px;
     background: white;
+    margin-left: 2%;
 }
 
 .bottom-box {
+    flex: 1;
+    border: 2px solid black;
+    border-radius: 15px;
+    background: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
 }
 
-.buttons {
+.top-box {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom:2%;
+}
+
+.radio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: white;
+    margin: 0;
+    height: 100%;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.buy-sell-buttons {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-right: 10px;
 }
 
-.buttons button {
+.buy-sell-buttons button {
     width: 50px;
     height: 50px;
     border: 2px solid black;
@@ -75,7 +111,9 @@ body {
     border: 2px solid black;
     border-radius: 15px;
     background: white;
-    margin-left: 10px;
+    flex-basis: 0;
+    flex-grow: 1;
+    margin-left: 2%;
 }
 
 @media (max-width: 768px) {
