@@ -4,22 +4,16 @@ import random
 from copy import deepcopy
 from stock_data import get_mock_stock_trends
 from gemini_ai import generate_hints
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SESSION_KEY")  # Required for session handling
 
-
-## Session Data functions
-
-# to create the initial session data
-def set_session():
-    """Store game data in session"""
-    data = request.json
-    session["user"]["balance"] = data.get("balance", 10000)
-    session["user"]["portfolio"] = data.get("portfolio", defaultdict(tuple))
-    session["current_period"] = data.get("current_period", 1)
-    session["companies"] = {data["companies"]}
-    session["industries"] = data["industries"]
-    return jsonify({"message": "Session data set", "session": session})
+## -------------------- SESSION FUNCTIONS --------------------
 
 # to retrieve session data
 @app.route("/get_session", methods=["GET"])
@@ -60,7 +54,6 @@ def initialize_game(gamemode, username):
                                             }
 
 
-
     ### Initialize companies and industries
     # match gamemode:
     #     case _: # Default gamemode (normal)   
@@ -77,20 +70,14 @@ def initialize_game(gamemode, username):
     #     session["companies"][company] = {
     #                                     "price": 100, 
     #                                     "employee_number": random_employee, 
-    #                                     "approval_rating": , 
     #                                     "history": history_dict 
     #                                     }
 
+## -------------------- GAME LOGIC --------------------
 
 # Menu page
 @app.route("/")
 def menu():
-    return render_template("menu.html")
-
-# End game
-@app.route("/end_game")
-def end_game():
-    session.clear()  # Clear session data
     return render_template("menu.html")
 
 # Start a new game
@@ -102,22 +89,28 @@ def start_game():
     gamemode = "game.html" # Choose which gamemode to play (for now only default)
     return render_template(gamemode)
 
+# End game
+@app.route("/end_game")
+def end_game():
+    session.clear()  # Clear session data
+    return render_template("menu.html")
+
 # Buy stock
 @app.route("/buy", methods=["POST"])
 def buy():
     stock = request.json["stock"]
     amount = int(request.json["amount"])
     
-    price = session["company"][stock]["price"]
+    price = session["companies"][stock]["price"]
     total_cost = amount * price
 
     if session["user"]["balance"] >= total_cost:
         session["user"]["portfolio"][stock]["amount"] += amount
         session["user"]["portfolio"][stock]["profit"] -= total_cost
         session["user"]["balance"] -= total_cost
-        # todo: ERROR HANDLER FOR BUYING MORE THAN YOU CAN AFFORD
-
-    return jsonify({"balance": session["user"]["balance"], "stocks": session["stocks"]})
+        return jsonify({"message": "Stock purchased successfully", "user": session["user"]})
+    else:
+        return jsonify({"error": "Not enough balance"}), 400
 
 # Sell stock
 @app.route("/sell", methods=["POST"])
@@ -125,23 +118,23 @@ def sell():
     stock = request.json["stock"]
     amount = int(request.json["amount"])
 
-    price = session["company"][stock][price]
+    price = session["companies"][stock]["price"]
     total_cost = amount * price
 
     if session["user"]["portfolio"][stock]["amount"] >= amount:
         session["user"]["portfolio"][stock]["amount"] -= amount
         session["user"]["portfolio"][stock]["profit"] += total_cost
         session["user"]["balance"] += total_cost
-        # todo: ERROR HANDLER FOR SELLING MORE THAN YOU HAVE
-
-    return jsonify({"balance": session["user"]["balance"], "stocks": session["stocks"]})
+        return jsonify({"message": "Stock sold successfully", "user": session["user"]})
+    else:
+        return jsonify({"error": "Not enough stock to sell"}), 400
 
 # Advance forward in time
 @app.route("/advance")
 def advance():
     if session["current_period"] < 10:
         session["current_period"] += 1
-        return jsonify({"current_period": (session["current_period"] + 1), "hint": session["ai_hints"][session["current_week"]]})
+        return jsonify({"current_period": (session["current_period"] + 1), "session": session})
     else:
         return jsonify({"game_over": True, "final_balance": session["user"]["balance"]})
 
