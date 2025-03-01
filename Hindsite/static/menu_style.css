@@ -11,6 +11,11 @@ body {
 h1 {
     margin-bottom: 50px; /* Add space between heading and button */
     margin-top: 20px;
+    font-family: Papyrus, fantasy;
+}
+
+h2 {
+    font-family: Papyrus, fantasy;
 }
 
 button {

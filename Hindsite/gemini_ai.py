@@ -44,7 +44,7 @@ def generate_trend(headline):
     generate two constants that describe the public's perception of the company(1-20, 1 being most negative, 20 being most positive)
     and the actual impact the news described in the headline may actually have on the functionality of the company
     from a technical standpoint (1-20, 1 being most negative, 20 being most positive). Please just only give the two numbers, nothing else
-    as a response, with the public perception first and the technical impact second.
+    as a response, with the public perception first and the technical impact second. Return them in the format x,y separated by a comma
     """
     try:
         response = client.models.generate_content(
@@ -52,6 +52,7 @@ def generate_trend(headline):
             contents=prompt
         )
         constants = response.text
+        constants = constants.split(",")
         for c in constants:
             if c.isdigit():
                 if public_perception == 0:
