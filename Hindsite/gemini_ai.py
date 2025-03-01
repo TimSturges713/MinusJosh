@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize the Gemini AI client
-client = genai.Client(api_key=os.getenv("GEMENI_KEY"))
+client = genai.Client(api_key=os.getenv("GEMINI_KEY"))
 
 # Generate AI hints for stock price changes
 def generate_hints(stock_data):
