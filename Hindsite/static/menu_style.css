@@ -1,10 +1,16 @@
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; 
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+}
+
+h1 {
+    margin-bottom: 50px; /* Add space between heading and button */
+    margin-top: 20px;
 }
 
 button {
