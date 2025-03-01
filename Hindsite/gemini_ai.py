@@ -1,6 +1,7 @@
 from google import genai
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel
 
 # Load environment variables from .env file
 load_dotenv()
@@ -8,9 +9,14 @@ load_dotenv()
 # Initialize the Gemini AI client
 client = genai.Client(api_key=os.getenv("GEMINI_KEY"))
 
-# Generate AI hints for stock price changes
-def generate_hints(stock_data):
-    hints = []
+class Headline(BaseModel):
+    title: str
+    detail: str
+
+
+# Generate AI headlines for company stories
+def generate_headlines(stock_data):
+    headlines = []
 
     prompt = f"""
     Given the following companies and their previous headlines (if any):
@@ -29,19 +35,26 @@ def generate_hints(stock_data):
     Usually either will be focused on staff misconduct, or new innovations, or any other form of common headline
     that may be made about a company. Each company may have previous headlines, if so make the new headline based off
     previous ones, companies can learn from their previous mistakes or go further into failure, you decide. Then give 
-    a list of all the new headlines for each respective company.
+    a list of all the new headlines for each respective company. Start each headline with a '*' character, and 
+    end it with a ';' character to show where it begins and ends. The headline will the title, and any added details
+    will be the details.
     """
 
     try:
         response = client.models.generate_content(
             model='gemini-2.0-flash', 
-            contents=prompt
+            contents=prompt,
+        config={
+            'response_mime_type': 'application/json',
+            'response_schema': Headline,
+            },
         )
-        hints.append(response.text)
+        response.parsed
+        
     except Exception as e:
-        hints.append("GEMINI AI RESPONSE FAILURE")
+        headlines.append("GEMINI AI RESPONSE FAILURE")
 
-    return hints
+    return headlines
 
 def generate_trend(headline):
     public_perception = 0, technical_impact = 0
@@ -62,7 +75,7 @@ def generate_trend(headline):
     generate two constants that describe the public's perception of the company(1-20, 1 being most negative, 20 being most positive)
     and the actual impact the news described in the headline may actually have on the functionality of the company
     from a technical standpoint (1-20, 1 being most negative, 20 being most positive). Please just only give the two numbers, nothing else
-    as a response, with the public perception first and the technical impact second. Return them in the format x,y separated by a comma
+    as a response, with the public perception first and the technical impact second.
     """
     try:
         response = client.models.generate_content(
@@ -70,7 +83,6 @@ def generate_trend(headline):
             contents=prompt
         )
         constants = response.text
-        constants = constants.split(",")
         for c in constants:
             if c.isdigit():
                 if public_perception == 0:
