@@ -14,8 +14,9 @@ class Headline(BaseModel):
     detail: str
 
 
+
 # Generate AI headlines for company stories
-def generate_headlines(stock_data):
+def generate_headlines(data):
     headlines = []
 
     prompt = f"""
@@ -35,9 +36,11 @@ def generate_headlines(stock_data):
     Usually either will be focused on staff misconduct, or new innovations, or any other form of common headline
     that may be made about a company. Each company may have previous headlines, if so make the new headline based off
     previous ones, companies can learn from their previous mistakes or go further into failure, you decide. Then give 
-    a list of all the new headlines for each respective company. Start each headline with a '*' character, and 
+    a list of all the new headlines for each respective company. There's only one headline 
+    per company. Start each headline with a '*' character, and 
     end it with a ';' character to show where it begins and ends. The headline will the title, and any added details
-    will be the details.
+    will be the details. Put the headline in the title part of the JSON object, and the details in the details
+    part of the JSON object. Return those in a list of JSON objects for each company.
     """
 
     try:
@@ -49,14 +52,12 @@ def generate_headlines(stock_data):
             'response_schema': Headline,
             },
         )
-        response.parsed
-        
+        return response.parsed
+
     except Exception as e:
         headlines.append("GEMINI AI RESPONSE FAILURE")
-
-    return headlines
-
-def generate_trend(headline):
+    
+def generate_trend(data):
     public_perception = 0, technical_impact = 0
     prompt = f"""
     Given the following headlines:
