@@ -8,6 +8,19 @@ body {
     background-color: #f0f0f0;
 }
 
+p1{
+    margin-top: 20px;
+    font-size: 20px;;
+    font-weight: bold;
+    font-family: Papyrus, fantasy;
+}
+
+input{
+    margin-top: 10px;
+    height: 25px;
+    width: 200px;
+}
+
 h1 {
     margin-bottom: 50px; /* Add space between heading and button */
     margin-top: 20px;
