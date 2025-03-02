@@ -238,32 +238,33 @@
         }
 
         let session = null;
+        let chartData = {};
+        const COMPANY_NAMES = [];
 
-        // function getSessionData() {
-        //     fetch('/get_session')
-        //         .then(response => response.json())
-        //         .then(data => {
+        function getSessionData() {
+            fetch('/get_session')
+                .then(response => response.json())
+                .then(data => {
 
-        //             console.log('Session data:', data);
-        //             session = data;
-        //             let currentPeriod = session.current_period;
+                    console.log('Session data:', data);
+                    session = data;
+                    let currentPeriod = session.current_period;
 
-        //             // Initialize chartData for each company
-        //             companies.forEach(company => {
-        //                 if (session.companies && session.companies[company]) {
-        //                     let history = session.companies[company].history;
+                    // Initialize chartData for each company
+                    companies.forEach(company => {
+                        let history = session[currentPeriod][company];
 
-        //                     chartData[company] = {
-        //                         labels: Array.from({ length: currentPeriod }, (_, i) => i + 1),  // Labels: 1 to currentPeriod
-        //                         data: Object.values(history).slice(0, currentPeriod).map(entry => entry[0]) // Extract prices
-        //                     };
-        //                 }
-        //             });
-        //         })
-        //         .catch((error) => {
-        //             console.error('Error getting session data:', error);
-        //         });
-        // }
+                        chartData[company] = {
+                            labels: Array.from({ length: currentPeriod }, (_, i) => i + 1),  // Labels: 1 to currentPeriod
+                            data: Object.values(history).slice(0, currentPeriod).map(entry => entry[0]) // Extract prices
+                        };
+                    }
+
+                )})
+                .catch((error) => {
+                    console.error('Error getting session data:', error);
+                });
+        }
 
         function buyStock(stock, amount) {
             fetch('/buy', {
@@ -290,6 +291,26 @@
 
         }
 
+        function getCompanyNames() {
+            fetch('/get_company_names', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    names = data;
+                }
+            })
+            .catch((error) => {
+                console.error('Error selling stock,):', error);
+            });
+        }
+
         function sellStock(stock, amount) {
             fetch('/sell', {
                 method: 'POST',
@@ -305,6 +326,7 @@
                     alert(data.error);
                 } else {
                     alert(data.message);
+                    session["user"] = data;
                 }
             })
             .catch((error) => {
@@ -315,9 +337,6 @@
 
         }
 
-        const chartData = {};
-
-        const COMPANY_NAMES = [];
 
         // getSessionData();
 
@@ -326,22 +345,22 @@
         // sets market chart to be a graph with all 10 data sets
 
         // Get chart canvas
-        // const ctx = document.getElementById('chartCanvas').getContext('2d');
+        const ctx = document.getElementById('chartCanvas').getContext('2d');
 
         // Create initial chart
-        // let chart = new Chart(ctx, {
-        //     type: 'line',
-        //     data: {
-        //         labels: chartData.data1.labels,
-        //         datasets: [{
-        //             label: 'Dataset 1',
-        //             data: chartData.data1.data,
-        //             borderColor: 'blue',
-        //             borderWidth: 2,
-        //             fill: false
-        //         }]
-        //     }
-        // });
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.data1.labels,
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: chartData.data1.data,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            }
+        });
 
         // Function to update chart when radio button is clicked
         function updateChart(company) {

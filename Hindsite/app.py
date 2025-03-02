@@ -54,6 +54,8 @@ def initialize_game(username):
         session["companies"][res] = dict()
         session["companies"][res] = stocks[res]
 
+    session["corp_names"] = list(stocks.keys())
+
     for z in range(1, 11):
         session[z] = periods[z]
 
@@ -111,6 +113,11 @@ def end_game():
     session.clear()  # Clear session data
     temp_dict.clear()  # Clear the real (temp) dictionary of data ;)
     return render_template("menu.html")
+
+# Get company names
+@app.route("/companies", methods=["GET"])
+def get_companies():
+    return jsonify({"names": session["corp_names"]})
 
 # Buy stock
 @app.route("/buy", methods=["POST"])
