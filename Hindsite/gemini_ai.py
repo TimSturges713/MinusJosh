@@ -20,12 +20,14 @@ class Comment(BaseModel):
 
 
 # Generate AI headlines for company stories
-def generate_headlines(data):
+def generate_data(company_data, company_name):
     headline = ""
 
     prompt = f"""
     Given the company and their previous headlines (if any):
-    - COMPANY1: ${data["COMPANY1"]}
+    - Previous headlines: ${company_data}
+    - Company name: ${company_name}
+
 
     Generate a short news headline that may be randomly negative or positive on changes within the company.
     Usually either will be focused on staff misconduct, or new innovations, or any other form of common headline
