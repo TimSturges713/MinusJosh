@@ -2,8 +2,8 @@
 from flask import Flask, render_template, request, jsonify, session, url_for
 import random
 from copy import deepcopy
-#from stock_data import get_mock_stock_trends
-#from gemini_ai import generate_data, get_gemini_initial_data
+from stock_data import get_stock_trends
+from gemini_ai import generate_data, game_start_gen
 from stock_data import get_stock_trends
 from test import *
 import os
@@ -86,7 +86,7 @@ def start_game():
     username = request.json.get("username", "Player")  # Get username from JSON
     initialize_game(username)
 
-    return jsonify({"redirect": url_for("game_page")})  # Return JSON response with redirect URL
+    return jsonify({"redirect": "/game"})  # Return JSON response with redirect URL
 
 @app.route("/game")
 def game_page():
