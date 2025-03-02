@@ -34,10 +34,10 @@ def get_session():
 def update_session():
     """Update session data (e.g., after a trade or week progression)"""
     data = request.json
-    session["user"] = data.get("user", session["user"])
-    session["current_period"] = data.get("current_period", session["current_period"])
-    session["companies"] = data.get("companies", session["companies"])
-    return jsonify({"message": "Session updated", "session": session})
+    temp_dict["user"] = data.get("user", temp_dict["user"])
+    temp_dict["current_period"] = data.get("current_period", temp_dict["current_period"])
+    temp_dict["companies"] = data.get("companies", temp_dict["companies"])
+    return jsonify({"message": "Session updated", "session": temp_dict})
 
 # Initialize session data
 def initialize_game(username):
@@ -53,9 +53,7 @@ def initialize_game(username):
 
     session["companies"] = dict()
     for res in stocks.keys():
-        # print(f"\n\n\t\t\t\tTESTING HERE:{res}!!!!!\n")
         session["companies"][res] = dict()
-        # print(f"TESTING HERE:{res} : ->>> {stocks[res]}")
         session["companies"][res] = stocks[res]
 
     for z in range(1, 11):
@@ -127,14 +125,14 @@ def buy():
     period = int(request.json["current_period"])
     amount = int(request.json["amount"])
     
-    price = session[period][stock]["curr_price"]
+    price = temp_dict[period][stock]["curr_price"]
     total_cost = amount * price
 
-    if session["user"]["balance"] >= total_cost:
-        session["user"]["portfolio"][stock]["amt"] += amount
-        session["user"]["portfolio"][stock]["spent"] += total_cost
-        session["user"]["balance"] -= total_cost
-        return jsonify({"message": "Stock purchased successfully", "user": session["user"]})
+    if temp_dict["user"]["balance"] >= total_cost:
+        temp_dict["user"]["portfolio"][stock]["amt"] += amount
+        temp_dict["user"]["portfolio"][stock]["spent"] += total_cost
+        temp_dict["user"]["balance"] -= total_cost
+        return jsonify({"message": "Stock purchased successfully", "user": temp_dict["user"]})
     else:
         return jsonify({"error": "Not enough balance"}), 400
 
@@ -144,26 +142,26 @@ def sell():
     stock = request.json["stock"]
     amount = int(request.json["amount"])
 
-    price = session["companies"][stock]["price"]
+    price = temp_dict["companies"][stock]["price"]
     total_cost = amount * price
 
-    if session["user"]["portfolio"][stock]["amt"] >= amount:
-        session["user"]["portfolio"][stock]["amt"] -= amount
-        session["user"]["portfolio"][stock]["earned"] += total_cost
-        session["user"]["balance"] += total_cost
-        return jsonify({"message": "Stock sold successfully", "user": session["user"]})
+    if temp_dict["user"]["portfolio"][stock]["amt"] >= amount:
+        temp_dict["user"]["portfolio"][stock]["amt"] -= amount
+        temp_dict["user"]["portfolio"][stock]["earned"] += total_cost
+        temp_dict["user"]["balance"] += total_cost
+        return jsonify({"message": "Stock sold successfully", "user": temp_dict["user"]})
     else:
         return jsonify({"error": "Not enough stock to sell"}), 400
 
 # Advance forward in time
 @app.route("/advance")
 def advance():
-    if session["current_period"] < 7:
-        session["current_period"] += 1
+    if temp_dict["current_period"] < 7:
+        temp_dict["current_period"] += 1
 
-        return jsonify({"current_period": (session["current_period"] + 1), "session": session})
+        return jsonify({"current_period": (temp_dict["current_period"] + 1), "session": temp_dict})
     else:
-        return jsonify({"game_over": True, "final_balance": session["user"]["balance"]})
+        return jsonify({"game_over": True, "final_balance": temp_dict["user"]["balance"]})
 
 if __name__ == "__main__":
     app.run(debug=True)
