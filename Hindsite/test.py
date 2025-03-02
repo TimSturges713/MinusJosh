@@ -221,7 +221,7 @@ def generate_trend(data):
         return public_perception, technical_impact
 
     except Exception as e:
-        return "GEMINI AI RESPONSE FAILURE"
+        raise "GEMINI AI RESPONSE FAILURE"
     
 
 def game_start_gen():
@@ -244,8 +244,7 @@ def game_start_gen():
             stocks[stock[c]] = stock[c+1]
         return stocks
     except Exception as e:
-        return "GEMINI AI RESPONSE FAILURE"
-
+        raise "GEMINI AI RESPONSE FAILURE"
 
 
 
