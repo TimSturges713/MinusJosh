@@ -130,7 +130,7 @@ def game_start_gen():
     name and stock value by a comma. Each new line is a different company and each line ends with a comma.
     """
     try:
-        response.client.models.generate_content(
+        response = client.models.generate_content(
             model='gemini-2.0-flash', 
             contents=prompt
         )
