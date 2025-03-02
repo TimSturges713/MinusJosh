@@ -54,8 +54,10 @@ def generate_data(company_data, company_name):
     except Exception as e:
         headline = "GEMINI AI RESPONSE FAILURE"
     (public_perception, technical_impact) = generate_trend(headline)
-    comments = []
-    for i in range(random.randint(3,5)):
+
+    num_of_comments = random.randint(3,5)
+    comments = [None] * num_of_comments
+    for i in range(0, num_of_comments):
         comments[i] = generate_comment(headline, public_perception)
     return headline, comments, public_perception, technical_impact
 
