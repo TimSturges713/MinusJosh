@@ -34,8 +34,7 @@ def generate_data(company_data, company_name):
     that may be made about a company. The company may have previous headlines, if so make the new headline based off
     previous ones, the company can learn from their previous mistakes or go further into failure, you decide. Then give 
     the new headline for the company. There's only one new headline generated
-    for the company. Start the headline with a '*' character, and 
-    end it with a ';' character to show where it begins and ends. The headline will be the title, and any added details
+    for the company. The headline will be the title, and any added details
     will be the details. Put the headline in the title part of the JSON object, and the details in the details
     part of the JSON object. Return this in a JSON object.
     """
