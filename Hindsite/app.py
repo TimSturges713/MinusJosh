@@ -125,7 +125,7 @@ def sell():
 # Advance forward in time
 @app.route("/advance")
 def advance():
-    if session["current_period"] < 10:
+    if session["current_period"] < 7:
         session["current_period"] += 1
 
         return jsonify({"current_period": (session["current_period"] + 1), "session": session})
