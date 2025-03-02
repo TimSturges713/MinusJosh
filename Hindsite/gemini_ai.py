@@ -74,6 +74,9 @@ def generate_comment(headline, public_perception):
     Format this answer into a JSON object with comment and likes as the two attributes in the object.
     I'm gonna prompt this prompt multiple times, so don't fall into patterns when generating these comments.
     Pretend that there's been multiple comments produced beforehand so make sure each one you make is unique.
+    Choose a random personality out of a list of personalities, pretend like you're writing as a person with that personality.
+    Go in depth with how someone may view this headline with that personality, don't be surface level, get deep inside that 
+    character and come up with a distinct comment.
     """
     try:
         response = client.models.generate_content(
