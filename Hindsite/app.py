@@ -24,7 +24,6 @@ def get_session():
         "user": session["user"],
         "current_period": session["current_period"],
         "companies": session["companies"],
-        "industries": session["industries"]
         })
 
 # to update session data
@@ -46,27 +45,24 @@ def initialize_game(gamemode, username):
     "portfolio": {}
     }
 
-    ### Initialize companies and industries
+    ### Initialize companies
     gemini_init_data = game_start_gen(gamemode)
-    session["industries"] = gemini_init_data["industries"]
-    session["companies"] = gemini_init_data["companies"]
+    for res in gemini_init_data:
+        session["companies"][res["name"]] = res
 
     # Company data structure setup
+    # session["companies"][company_name]["name"] = company_name # ik its redundant but its here so deal w/ it
     # session["companies"][company_name]["price"] = current_stock_cost
-    # session["companies"][company_name]["industry"] = industry_name
     # session["companies"][company_name]["employees"] = num_of_employees
     # session["companies"][company_name]["stock_name"] = acronym
-    # session["companies"][company_name]["history"][period_num] = {
-    #                                                             "headline": "Headline text",
-    #                                                             "comments": {comment:"Comment text", likes:likes_amt},  {comment:"Comment text", likes:likes_amt}, ...},
-    #                                                             "price": stock_cost
-    #                                                             }
+    # }
 
     # Initialize user portfolio
     for company in session["companies"].keys():    
         session["user"]["portfolio"][company] = { 
                                             "amount": 0, 
-                                            "profit": 0 
+                                            "spent": 0,
+                                            "earned": 0 
                                             }
 
 ## -------------------- GAME LOGIC --------------------
@@ -95,14 +91,15 @@ def end_game():
 @app.route("/buy", methods=["POST"])
 def buy():
     stock = request.json["stock"]
+    period = int(request.json["current_period"])
     amount = int(request.json["amount"])
     
-    price = session["companies"][stock]["price"]
+    price = session[period][stock]["curr_price"]
     total_cost = amount * price
 
     if session["user"]["balance"] >= total_cost:
-        session["user"]["portfolio"][stock]["amount"] += amount
-        session["user"]["portfolio"][stock]["profit"] -= total_cost
+        session["user"]["portfolio"][stock]["amt"] += amount
+        session["user"]["portfolio"][stock]["spent"] += total_cost
         session["user"]["balance"] -= total_cost
         return jsonify({"message": "Stock purchased successfully", "user": session["user"]})
     else:
@@ -117,9 +114,9 @@ def sell():
     price = session["companies"][stock]["price"]
     total_cost = amount * price
 
-    if session["user"]["portfolio"][stock]["amount"] >= amount:
-        session["user"]["portfolio"][stock]["amount"] -= amount
-        session["user"]["portfolio"][stock]["profit"] += total_cost
+    if session["user"]["portfolio"][stock]["amt"] >= amount:
+        session["user"]["portfolio"][stock]["amt"] -= amount
+        session["user"]["portfolio"][stock]["earned"] += total_cost
         session["user"]["balance"] += total_cost
         return jsonify({"message": "Stock sold successfully", "user": session["user"]})
     else:
@@ -130,13 +127,6 @@ def sell():
 def advance():
     if session["current_period"] < 7:
         session["current_period"] += 1
-        for company in session["companies"].keys():
-            headline, comments, public_perception, technical_impact = generate_data(session[company], company)
-            new_price = get_stock_trends(headline, comments, public_perception, technical_impact)
-            session["companies"][company]["price"] = new_price
-            session["companies"][company]["history"][session["current_period"]]["headline"] = headline
-            session["companies"][company]["history"][session["current_period"]]["comments"] = comments
-            session["companies"][company]["history"][session["current_period"]]["price"] = new_price
 
         return jsonify({"current_period": (session["current_period"] + 1), "session": session})
     else:
