@@ -23,18 +23,82 @@ class Comment(BaseModel):
 def generate_data(company_data, company_name):
     headline = ""
 
+
     prompt = f"""
-    Given the company and their previous headlines (if any):
-    - Previous headlines: ${company_data}
-    - Company name: ${company_name}
+    Generate a short but unique news headline for the company '{company_name}', considering:
+    
+    - Previous headlines (if any): {company_data}
+    - Assume at least 6 months have passed since the last event.
+    - The company can experience **positive, negative, or neutral** events.
+    - The event type should vary and not always be the same type as previous headlines.
 
+    Each company should have a mix of financial, leadership, legal, product, and external events.
+    #### **💰 Financial Changes (Positive, Neutral, or Negative)**
+- The company **announces record-breaking profits**, sending stock prices soaring. 
+- A surprise **stock buyback program** boosts share prices. 
+- Investors pull out after **unexpected revenue shortfalls**, leading to a sharp drop. 
+- The company secures a **billion-dollar investment deal**, creating optimism for expansion.
+- Earnings meet expectations, **causing no major stock movement**. 
 
-    Generate a short update or news announcement/headline on the company that may be randomly positive, negative, or neutral on changes within the company. Updates can range for simple, normal quiet announcements, to un-expected important events.
-    The company may have previous headlines, if so make the new headline based off previous ones, assuming at least 6 months have past between each headline, and its been more than 6 months since the most recent headline, the company can learn from their previous mistakes or go further into failure, you decide. Then give 
-    the new headline for the company. There's only one new headline generated for the company. 
-    The headline will be the title, and any added details will be the details. 
-    Put the headline in the title part of the JSON object, and the details in the details
-    part of the JSON object. Return this in a JSON object.
+#### **🏛 Leadership Shifts (Positive, Neutral, or Negative)**
+- The **CEO resigns suddenly** after an internal power struggle. 
+- A new, **controversial CEO** takes over, sparking debate in the financial community.
+- The company appoints a **visionary leader**, implementing a radical strategy. 
+- Boardroom shake-up **raises questions about future stability**. 
+- A whistleblower reveals **leadership corruption**, forcing resignations.
+
+#### **⚖️ Scandals & Legal Trouble (Mostly Negative, Sometimes Neutral)**
+- The company faces a **federal investigation** for financial fraud.
+- A former executive is arrested for **embezzlement**, shocking the industry.
+- The company reaches **a settlement in a long-standing lawsuit**, ending legal uncertainty.
+- A **major cybersecurity breach** exposes millions of customer records. 
+- Government regulators approve the company’s **new compliance standards**.
+
+#### **🛠 Major Product Breakthroughs or Failures (Positive, Neutral, or Negative)**
+- The company unveils **groundbreaking AI technology**, sending stock soaring.
+- A highly anticipated product **fails spectacularly**, leading to mass refunds. 
+- A **major competitor beats them to market**, causing investor concern.
+- The company’s **new electric vehicle catches fire** during testing, delaying release
+- A routine software update **improves efficiency with minor tweaks**. 
+
+#### **🚨 Unexpected Crises (Mostly Negative)**
+- The company suffers **a factory fire or natural disaster**, disrupting production. 
+- A **sudden cyberattack** forces a shutdown of critical infrastructure. 
+- Employee strikes or union protests bring production to a halt.
+- International sanctions force the company to **exit key markets**, hurting profits.
+- The company mitigates risk by **securing backup production facilities**. 
+
+#### **🏛 Government Regulations & Geopolitical Events (Positive, Neutral, or Negative)**
+- New government policies **crack down on industry practices**, forcing restructuring. ve)*
+- A major **trade war or tariff** significantly impacts the company’s bottom line. 
+- The company **secures a government contract**, leading to financial stability. 
+- A new law bans their **flagship product**, sending stocks crashing. 
+- Company leadership **meets with regulators to ensure compliance**, preventing fines.
+
+#### **📉 Market Competition & Mergers (Positive, Neutral, or Negative)**
+- A **rival company launches an aggressive takeover bid**, making headlines. 
+- The company **merges with a competitor**, forming a new industry giant. 
+- A small startup disrupts the market, threatening the company's dominance.
+- The company is caught **copying a competitor’s technology**, leading to legal trouble.
+- A new strategic partnership **boosts market confidence**. 
+
+#### **⚙️ Supply Chain Issues & Production Problems (Positive, Neutral, or Negative)**
+- A global semiconductor shortage **delays product rollouts** by months.
+- The company’s new manufacturing plant **faces environmental protests**.
+- Labor shortages force **a major production slowdown**.
+- A **supplier goes bankrupt**, leaving the company scrambling for alternatives.
+- The company secures **alternative supply chains**, reducing future risks.
+
+---
+    🎯 **Rules for Generation:**
+    - Ensure variety: Do not repeat similar types of events multiple times in a row.
+    - Do not make every military company about "new contracts" or "autonomous drones."
+    - Keep the headline engaging but **not repetitive**.
+    - Return only one headline **formatted as JSON**, with:
+      - `"title"`: The short, attention-grabbing news headline.
+      - `"details"`: A sentence or two expanding on the event.
+
+    Return the response **strictly as a JSON object**.
     """
 
     try:
@@ -52,13 +116,15 @@ def generate_data(company_data, company_name):
         headline = "GEMINI AI RESPONSE FAILURE"
     (public_perception, technical_impact) = generate_trend(headline)
     num_of_comments = random.randint(3,5)
-    comments = [None] * num_of_comments
-    for i in range(0, num_of_comments):
-        comments[i] = generate_comment(headline, public_perception, comments)
+    comments = [None, None, None]
+    comments[0] = generate_pos_comment(headline, public_perception, comments)
+    comments[1] = generate_pos_comment(headline, public_perception, comments)
+    comments[2] = generate_neg_comment(headline, public_perception, comments)
+    random.shuffle(comments)
     return headline, comments, public_perception, technical_impact
 
 
-def generate_comment(headline, public_perception, old_comments):
+def generate_pos_comment(headline, public_perception, old_comments):
     prompt = f"""
     Given the headline for a company's recent news report and the public's perception of the company's changes,
     (Note: the public perception is an integer from 1-20, 1 being most negative, 20 vice versa):
@@ -66,16 +132,17 @@ def generate_comment(headline, public_perception, old_comments):
     - PUBLIC_PERCEPTION: ${public_perception}
     - OTHER COMMENTS (IF ANY): ${old_comments}
 
-    Write a comment that may be made from viewers online looking at the headline's story.
-    This comment will align with the public's perception and accurately describe how they feel. The comment should be limited to 2 sentences.
-    Depending on how aligned this comment is with the public's views, the more likes they'll have. For example, if the headline is negative and depicts a company in a bad light, the public perception will be low, and comments with negative takes should have high likes, and vice versa if the headline paints the company in a good light.
+    Write a comment that is from the perspective of a viewer online looking at the headline's story.
+    The comment must agree with the public opinion of the company's changes and the headline.
+    If the public opinion is less than 10, then the comment must be negative about the headline, and if the public opinion is greater than 10, the comment must be positive about the story.
+    This comment, as it agrees with the public opinion, will have a large amount of likes.
     Format this answer into a JSON object with comment and likes as the two attributes in the object.
-    Choose a random personality out of a long list of personalities, pretend like you're writing as a person with that personality.
-    Go in depth with how someone may view this headline with that personality, don't be surface level, get deep inside that 
-    character and come up with a distinct comment. Make the comment different than the old comments if there are any. Avoid using same phrasing and speech patterns.
-    Try and avoid describing yourself, or things that follow the pattern of "As a ______" or "With a job in _______". Just write the comment as if you were the person you're pretending to be.
-    Remember that even though the public may find an announcement good, they may still have negative comments, and vice versa. Just make sure that
-    in these cases, the comments that don't align with the public's perception have less likes. Make sure that at least one comment supports the public's perception, and at least one comment does not.
+    Choose a random personality out of a list of personalities, pretend like you're writing as a person with that personality.
+    Avoid describing yourself, or things that follow the pattern of "As a ______" or "With a job in _______". Just write the comment as if you were the person you're pretending to be, without describing your current circumstances or occupation.
+    Go in depth with how someone may view this headline agrees with public opinion with said personality, don't be surface level, get deep inside that 
+    character and come up with a distinct comment.
+
+    🚨 **Do NOT include anything except the JSON response.** No explanations or extra text.
     """
 
     try:
@@ -92,8 +159,40 @@ def generate_comment(headline, public_perception, old_comments):
         comment = "GEMINI AI RESPONSE FAILURE"
     return comment
 
+def generate_neg_comment(headline, public_perception, old_comments):
+    prompt = f"""
+    Given the headline for a company's recent news report, the public's perception of the company's changes, and the other comments,
+    (Note: the public perception is an integer from 1-20, 1 being most negative view of the headline, and 20 being the most positive):
+    - HEADLINE: ${headline}
+    - PUBLIC_PERCEPTION: ${public_perception}
+    - OTHER COMMENTS (IF ANY): ${old_comments}
 
-    
+    Write a comment that is from the perspective of a viewer online looking at the headline's story.
+    The comment must disagree with the public opinion of the company's changes and the headline.
+    If the public opinion is less than 10, then the comment must be positive about the headline, and if the public opinion is greater than 10, the comment must be negative about the story.
+    This comment, as it disagrees with the public opinion, will have a small amount of likes.
+    Avoid describing yourself, or things that follow the pattern of "As a ______" or "With a job in _______". Just write the comment as if you were the person you're pretending to be, without describing your current circumstances or occupation.
+    Format this answer into a JSON object with comment and likes as the two attributes in the object.
+    Choose a random personality out of a list of personalities, pretend like you're writing as a person with that personality.
+    Go in depth with how someone may view this headline against public opinion with said personality, don't be surface level, get deep inside that 
+    character and come up with a distinct comment.
+
+    🚨 **Do NOT include anything except the JSON response.** No explanations or extra text.
+    """
+
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.0-flash', 
+            contents=prompt,
+        config={
+            'response_mime_type': 'application/json',
+            'response_schema': Comment,
+            },
+        )
+        comment = response.parsed
+    except Exception as e:
+        comment = "GEMINI AI RESPONSE FAILURE"
+    return comment
 
 
 def generate_trend(data):
