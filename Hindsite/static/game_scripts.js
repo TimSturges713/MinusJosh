@@ -74,6 +74,11 @@ function displayComments(company){
     }
 }
 
+function displayNewsandComments(company){
+    displayNews(company);
+    displayComments(company);
+}
+
 function buyStock(stock, amount) {
     fetch('/buy', {
         method: 'POST',
