@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game UI</title>
-    <link rel="stylesheet" href="../templates/objects/company_radio_styles.css">
-    <link rel="stylesheet" href="../static/game_style.css">
-    <!--  Chart.js for displaying graphical data  -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='company_radio_styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='game_style.css') }}">
+        <!--  Chart.js for displaying graphical data  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <!DOCTYPE html>
@@ -14,137 +14,11 @@
 </head>
 <body style="background:#5a9156;">
     <div class="container">
-        
-    
         <div class="screen">
             <div class="center">
                 <div class="top-box">
                     <div class="radio-container">
-                        <body class="cr-body">
-                            <div class="cr-container">
-                                <article class="cr-radio-group">
-                        
-                                    <label id="world" for="dashboard" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="dashboard" />
-                                        <b>World View </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2Z" stroke="black" stroke-width="2"/>
-                                            <path d="M2 12H22" stroke="black" stroke-width="2"/>
-                                            <path d="M12 2C15 5 16 7 16 12C16 17 15 19 12 22" stroke="black" stroke-width="2"/>
-                                            <path d="M12 2C9 5 8 7 8 12C8 17 9 19 12 22" stroke="black" stroke-width="2"/>
-                                        </svg>
-                                    </label>
-                                    <label id="company1" for="dashboard" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="dashboard" />
-                                        <b>Company 1 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="3" y="2" width="18" height="20" rx="2" stroke="black" stroke-width="2" fill="none"/>
-                                            <rect x="7" y="6" width="2" height="2" fill="black"/>
-                                            <rect x="11" y="6" width="2" height="2" fill="black"/>
-                                            <rect x="15" y="6" width="2" height="2" fill="black"/>
-                                            <rect x="7" y="10" width="2" height="2" fill="black"/>
-                                            <rect x="11" y="10" width="2" height="2" fill="black"/>
-                                            <rect x="15" y="10" width="2" height="2" fill="black"/>
-                                            <rect x="7" y="14" width="2" height="2" fill="black"/>
-                                            <rect x="11" y="14" width="2" height="2" fill="black"/>
-                                            <rect x="15" y="14" width="2" height="2" fill="black"/>
-                                            <rect x="10" y="18" width="4" height="3" fill="black"/>
-                                          </svg>
-                                          
-                                    </label>
-                                    <label id="company2" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 2 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="3" y="6" width="18" height="12" rx="2" stroke="black" stroke-width="2" fill="none"/>
-                                            <path d="M8 6V4C8 3.44772 8.44772 3 9 3H15C15.5523 3 16 3.44772 16 4V6" stroke="black" stroke-width="2"/>
-                                            <rect x="10" y="11" width="4" height="2" fill="black"/>
-                                          </svg>
-                                          
-                                    </label>
-                                    <label id="company3" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 3 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 20V10L8 12V10L13 12V10L21 14V20H3Z" stroke="black" stroke-width="2" fill="none"/>
-                                            <path d="M5 20V17" stroke="black" stroke-width="2"/>
-                                            <path d="M9 20V17" stroke="black" stroke-width="2"/>
-                                            <path d="M13 20V17" stroke="black" stroke-width="2"/>
-                                            <path d="M17 20V17" stroke="black" stroke-width="2"/>
-                                            <path d="M7 4C7 3.44772 7.44772 3 8 3H10C10.5523 3 11 3.44772 11 4V7H7V4Z" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                    </label>
-                                    <label id="company4" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 4 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 20V10H7V20H3Z" stroke="black" stroke-width="2"/>
-                                            <path d="M9 20V6H13V20H9Z" stroke="black" stroke-width="2"/>
-                                            <path d="M15 20V3H19V20H15Z" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                    </label>
-                                    <label id="company5" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 5 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4 20H20V4H4V20Z" stroke="black" stroke-width="2"/>
-                                            <path d="M8 20V16H12V20" stroke="black" stroke-width="2"/>
-                                            <path d="M6 6H8V8H6V6Z" stroke="black" stroke-width="2"/>
-                                            <path d="M6 10H8V12H6V10Z" stroke="black" stroke-width="2"/>
-                                            <path d="M10 6H12V8H10V6Z" stroke="black" stroke-width="2"/>
-                                            <path d="M10 10H12V12H10V10Z" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                          
-                                    </label>
-                                    <label id="company6" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 6 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M6 2H14L18 6V22H6V2Z" stroke="black" stroke-width="2"/>
-                                            <path d="M14 2V6H18" stroke="black" stroke-width="2"/>
-                                            <path d="M9 10H13" stroke="black" stroke-width="2"/>
-                                            <path d="M9 14H15" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                    </label>
-                                    <label id="company7" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 7 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4 8H20V20H4V8Z" stroke="black" stroke-width="2"/>
-                                            <path d="M2 8H22V10H2V8Z" stroke="black" stroke-width="2"/>
-                                            <path d="M9 8V5C9 4.44772 9.44772 4 10 4H14C14.5523 4 15 4.44772 15 5V8" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                    </label>
-                                    <label id="company8" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 8 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2C8 2 5 5 5 9C5 11.5 6.5 14 9 15V17H15V15C17.5 14 19 11.5 19 9C19 5 16 2 12 2Z" stroke="black" stroke-width="2"/>
-                                            <path d="M9 17H15V19H9V17Z" stroke="black" stroke-width="2"/>
-                                            <path d="M10 20H14" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                    </label>
-                                    <label id="company9" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 9 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2V4M12 20V22M4 12H2M22 12H20M5 5L6.5 6.5M18 18L16.5 16.5M5 19L6.5 17.5M18 6L16.5 7.5" stroke="black" stroke-width="2"/>
-                                            <circle cx="12" cy="12" r="4" stroke="black" stroke-width="2"/>
-                                          </svg>                  
-                                    </label>
-                                    <label id="company10" for="profile" class="cr-radio-label">
-                                        <input class="cr-hidden-input" type="radio" name="path" id="profile" />
-                                        <b>Company 10 </b>
-                                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="9" cy="7" r="3" stroke="black" stroke-width="2"/>
-                                            <path d="M4 20V18C4 16 6 14 9 14C12 14 14 16 14 18V20" stroke="black" stroke-width="2"/>
-                                            <circle cx="17" cy="9" r="2" stroke="black" stroke-width="2"/>
-                                            <path d="M15 20V18C15 16.5 16.5 15 18.5 15C20.5 15 22 16.5 22 18V20" stroke="black" stroke-width="2"/>
-                                          </svg>
-                                    </label>
-                                </article>
-                            </div>
-                        </body>
+                       {% include 'company_radio.html' %}
                     </div>
                     <div class="main-box" style="position:relative; padding:10px">
                         <h1 id="company-name" style="font-size: 250%; text-align: center;font-family: 'Trebuchet MS', sans-serif">
