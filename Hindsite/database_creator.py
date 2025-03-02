@@ -8,6 +8,10 @@ import random
 from typing import List  # FIX: Import List for Pydantic model
 from test import *
 
+INDUSTRIES = 5
+COMPANIES = 4
+HEADLINES = 10
+
 class HeadlineArray(BaseModel):
     headlines: List[str]
 
@@ -39,7 +43,7 @@ def gen_extra_details(conn, headline, public):
     prompt_id = cursor.fetchone()[0]
 
     comments = [None, None, None]
-    time.sleep(11)
+    time.sleep(20)
     global i
     print(i)
     i += 1
@@ -61,7 +65,7 @@ def gen_extra_details(conn, headline, public):
 
 def gemini_create_prompts(industry) -> list:
     prompt = f"""
-    Using the industry {industry}, generate a list of 100 random yet distinct and unique headlines (limit the headlines to 75 characters maximum) that may be positive or negative on changes within the industry. Each headline needs to have a place for a company name in the industry to be inserted. This place where the name will go should have '{{name}}' in its place as a placeholder.
+    Using the industry {industry}, generate a list of {HEADLINES} random yet distinct and unique headlines (limit the headlines to 75 characters maximum) that may be positive or negative on changes within the industry. Each headline needs to have a place for a company name in the industry to be inserted. This place where the name will go should have '{{name}}' in its place as a placeholder.
     Put the headline in the 'headline' part of the JSON object, with the key for each being an incrementing int. The returned result will be a json object.
 
     The format of the json should be     
@@ -71,7 +75,7 @@ def gemini_create_prompts(industry) -> list:
             "Headline 1",
             "Headline 2",
             ...
-            "Headline 100"
+            "Headline 10"
         ]
     }}
     ```
@@ -95,7 +99,7 @@ def gemini_create_prompts(industry) -> list:
 
 def gemini_create_industries() -> list:
     prompt = f"""
-    Generate a list of 30 random yet distinct and unique industries. Each industry should be a different industry that is commonly known.
+    Generate a list of {INDUSTRIES} random yet distinct and unique industries. Each industry should be a different industry that is commonly known.
     Put the industry in the 'industries' part of the JSON object, with the key for each being an incrementing int. The returned result will be a json object.
 
     The format of the json should be     
@@ -105,7 +109,7 @@ def gemini_create_industries() -> list:
             "industry 1",
             "industry 2",
             ...
-            "industry 30"
+            "industry 5"
         ]
     }}
     ```
@@ -129,7 +133,7 @@ def gemini_create_industries() -> list:
 # Create a list of industries
 industries = gemini_create_industries()
 random.shuffle(industries)
-industries = industries[:10] # Limit to 15 industries
+industries = industries[:5] # Limit to 15 industries
 
 # Connect to SQLite database (creates the file if not exists)
 conn = sqlite3.connect(db_name)
@@ -242,7 +246,7 @@ def gen_companies():
     # Close the database connection
     for industry in industries:
         prompt = f"""
-        Make a list of ten random made-up companies (with one word names less than 30 characters). All 10 companies should be  in the industry of {industry}.
+        Make a list of 4 random made-up companies (with one word names less than 30 characters). All 4 companies should be  in the industry of {industry}.
         Each company needs to have their stock market acronym, their respective stock costs, and the number of their employees.
         Then return the Companies with their Company name as the "name", their stock price as the "price", the number of employees as "employees", and their acronym as "stock_name" in a JSON object. The stock price is between 1 cent and 1000 dollars.
         """

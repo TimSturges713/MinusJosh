@@ -1,10 +1,9 @@
 # Flask stuff for API connection to webapp
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, url_for
 import random
 from copy import deepcopy
-from stock_data import get_mock_stock_trends
-from gemini_ai import generate_data, get_gemini_initial_data
 from stock_data import get_stock_trends
+from test import *
 import os
 from dotenv import load_dotenv
 
@@ -37,17 +36,18 @@ def update_session():
     return jsonify({"message": "Session updated", "session": session})
 
 # Initialize session data
-def initialize_game(gamemode, username):
+def initialize_game(username):
     session["current_period"] = 1
     session["user"] = {
     "username": username,
     "balance": 10000,
     "portfolio": {}
     }
+    session["companies"] = dict()
 
     ### Initialize companies
-    gemini_init_data = game_start_gen(gamemode)
-    for res in gemini_init_data:
+    periods, stocks = game_start_gen()
+    for res in stocks:
         session["companies"][res["name"]] = res
 
     # Company data structure setup
@@ -75,11 +75,15 @@ def menu():
 # Start a new game
 @app.route("/start_game", methods=["POST"])
 def start_game():
-    gamemode = request.form.get("gamemode", "default")  # Get gamemode
-    username = request.form.get("username", "Player")  # Get username
-    initialize_game(gamemode, username)
-    gamemode = "game.html" # Choose which gamemode to play (for now only default)
-    return render_template(gamemode)
+    username = request.json.get("username", "Player")  # Get username from JSON
+    initialize_game(username)
+
+    return jsonify({"redirect": url_for("game_page")})  # Return JSON response with redirect URL
+
+@app.route("/game")
+def game_page():
+    return render_template("game.html")  # Serve game.html
+
 
 # End game
 @app.route("/end_game")

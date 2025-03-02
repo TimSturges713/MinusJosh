@@ -11,6 +11,8 @@ from stock_data import get_stock_trends
 # Load environment variables from .env file
 load_dotenv()
 db_name = "small_db.db"
+backup_file = "backup.txt"
+connx = None
 
 # Initialize the Gemini AI client
 client = genai.Client(api_key=os.getenv("GEMINI_KEY"))
@@ -46,13 +48,18 @@ def gen_details(headline):
         details = response.parsed
         return details.details
     except Exception as e:
+        with open(backup_file, "w") as f:
+            for line in connx.iterdump():
+                f.write(f"{line}\n")
+
         return "GEMINI AI RESPONSE FAILURE"
 
 
 # Generate AI headlines for company stories
 def generate_data(company_name):
-    
+    global connx
     conn = sqlite3.connect(db_name)
+    connx = conn
     cursor = conn.cursor()
 
     # SQL query to fetch 4 random industries
@@ -86,6 +93,11 @@ def generate_data(company_name):
         headline = response.parsed
 
     except Exception as e:
+        with open(backup_file, "w") as f:
+            # Use .dump to write database contents to file
+            for line in connx.iterdump():
+                f.write(f"{line}\n")
+
         headline = "GEMINI AI RESPONSE FAILURE"
         return headline, [], 0, 0
 
@@ -132,6 +144,12 @@ def generate_pos_comment(headline, public_perception, old_comments):
         comment = response.parsed
     except Exception as e:
         print(e)
+        with open(backup_file, "w") as f:
+            # Use .dump to write database contents to file
+            global connx
+            for line in connx.iterdump():
+                f.write(f"{line}\n")
+
         comment = None
     return comment
 
@@ -167,6 +185,12 @@ def generate_neg_comment(headline, public_perception, old_comments):
         )
         comment = response.parsed
     except Exception as e:
+        with open(backup_file, "w") as f:
+            # Use .dump to write database contents to file
+            global connx
+            for line in connx.iterdump():
+                f.write(f"{line}\n")
+
         print(e)
         comment = None
     return comment
@@ -175,6 +199,7 @@ def generate_neg_comment(headline, public_perception, old_comments):
 def generate_trend(data):
     public_perception = 0
     technical_impact = 0
+    time.sleep(8)
     prompt = f"""
     Given the following headline JSON object:
     - HEADLINE: ${data}
@@ -196,6 +221,12 @@ def generate_trend(data):
         return public_perception, technical_impact
 
     except Exception as e:
+        with open(backup_file, "w") as f:
+            # Use .dump to write database contents to file
+            global connx
+            for line in connx.iterdump():
+                f.write(f"{line}\n")
+
         print("GEMINI AI RESPONSE FAILURE")
         raise e
 
@@ -240,7 +271,7 @@ def game_start_gen():
 
     industries = cursor.fetchall()
 
-    industry_map = {row[0]: row[1] for row in industries}
+    industry_map = {row[0]: idx for idx, row in enumerate(industries)}
 
     # Select 4 unique industries
     random_selection = random.sample(list(industry_map.keys()), 4)
