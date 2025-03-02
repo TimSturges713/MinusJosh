@@ -238,6 +238,8 @@
         }
 
         let session = null;
+        let chartData = {};
+        const COMPANY_NAMES = [];
 
         function getSessionData() {
             fetch('/get_session')
@@ -296,6 +298,26 @@
 
         }
 
+        function getCompanyNames() {
+            fetch('/get_company_names', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    names = data;
+                }
+            })
+            .catch((error) => {
+                console.error('Error selling stock,):', error);
+            });
+        }
+
         function sellStock(stock, amount) {
             fetch('/sell', {
                 method: 'POST',
@@ -311,6 +333,7 @@
                     alert(data.error);
                 } else {
                     alert(data.message);
+                    session["user"] = data;
                 }
             })
             .catch((error) => {
@@ -324,9 +347,6 @@
 
         }
 
-        const chartData = {};
-
-        const COMPANY_NAMES = [];
 
         getSessionData();
 
@@ -334,10 +354,10 @@
         // sets the radio buttons to the company names
         // sets market chart to be a graph with all 10 data sets
 
-        //Get chart canvas
+        // Get chart canvas
         const ctx = document.getElementById('chartCanvas').getContext('2d');
 
-        //Create initial chart
+        // Create initial chart
         let chart = new Chart(ctx, {
             type: 'line',
             data: {
