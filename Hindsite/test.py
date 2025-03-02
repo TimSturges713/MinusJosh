@@ -29,10 +29,8 @@ def generate_data(company_data, company_name):
     - Company name: ${company_name}
 
 
-    Generate a short news headline that may be randomly negative or positive on changes within the company.
-    Usually either will be focused on staff misconduct, or new innovations, or any other form of common headline
-    that may be made about a company. The company may have previous headlines, if so make the new headline based off
-    previous ones, the company can learn from their previous mistakes or go further into failure, you decide. Then give 
+    Generate a short update or news announcement/headline on the company that may be randomly positive, negative, or neutral on changes within the company. Updates can range for simple, normal quiet announcements, to un-expected important events.
+    The company may have previous headlines, if so make the new headline based off previous ones, the company can learn from their previous mistakes or go further into failure, you decide. Then give 
     the new headline for the company. There's only one new headline generated
     for the company. The headline will be the title, and any added details
     will be the details. Put the headline in the title part of the JSON object, and the details in the details
@@ -69,10 +67,13 @@ def generate_comment(headline, public_perception, old_comments):
     - OTHER COMMENTS (IF ANY): ${old_comments}
 
     Write a comment that may be made from viewers online looking at the headline's story.
-    This comment will align with the public's perception and accurately describe how they feel.
-    Depending on how aligned this comment is with the public's views, the more likes they'll have.
+    This comment will align with the public's perception and accurately describe how they feel. The comment should be limited to 2 sentences.
+    Depending on how aligned this comment is with the public's views, the more likes they'll have. For example, if the headline is negative and depicts a company in a bad light, the public perception will be low, and comments with negative takes should have high likes, and vice versa if the headline paints the company in a good light.
     Format this answer into a JSON object with comment and likes as the two attributes in the object.
-    Make the comment different than the old comments if there are any. Avoid using same phrasing and speech patterns.
+    Choose a random personality out of a long list of personalities, pretend like you're writing as a person with that personality.
+    Go in depth with how someone may view this headline with that personality, don't be surface level, get deep inside that 
+    character and come up with a distinct comment. Make the comment different than the old comments if there are any. Avoid using same phrasing and speech patterns.
+    Try and avoid describing yourself, or things that follow the pattern of "As a ______" or "With a job in _______". Just write the comment as if you were the person you're pretending to be.
     """
 
     try:
