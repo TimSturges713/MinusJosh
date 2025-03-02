@@ -221,7 +221,8 @@ def generate_trend(data):
         return public_perception, technical_impact
 
     except Exception as e:
-        raise "GEMINI AI RESPONSE FAILURE"
+        print("GEMINI AI RESPONSE FAILURE")
+        raise e
     
 
 def game_start_gen():
