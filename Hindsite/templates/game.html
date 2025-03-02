@@ -21,18 +21,85 @@
                     <div class="radio-container">
                         <div id="radio-placeholder"></div>
                     </div>
-                    <div class="main-box"></div>
+                    <div class="main-box">
+                        <div id="graph-placeholder" style="max-height:fit-content; max-width:fit-content;"></div>
+                    </div>
                 </div>
                 <div class="bottom-box">
-                    <div></div>
+                    <div style="width:100%">
+
+
+                    </div>
+
+                    <div class="counter-body">
+                        <div class="counter-container"  style="width: 230px">
+                            <div class="counter-flex">
+                                <div style="font-size: 24px; font-weight: bold; text-align: center">
+                                    <span id="dollar-value">0</span>
+                                </div>
+                                <div class="tri-flex" style="margin-bottom: 8px;padding-top: 8px;">
+                                    <div>
+                                        <button id="decrease" class="counter-btn">-</button>
+                                    </div>
+                                    <div style="margin-top:10px; margin-bottom:10px; ">
+                                        <span id="counter-value">0</span>
+                                    </div>
+                                    <div>
+                                        <button id="increase" class="counter-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="bi-flex">
+                                    <button id="multiplier" class="counter-btn reset">x1</button>
+                                    <button id="reset" class="counter-btn reset" styles="width: 50px;">reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="buy-sell-buttons">
-                        <button>Buy</button>
-                        <button>Sell</button>
+                        <button><b>Buy</b></button>
+                        <button><b>Sell</b></button>
                     </div>
                 </div>
             </div>
 
-            <div class="news"></div>
+            <div class="news" style="font-family:Garamond;">
+                <div class="tri-flex-col" style="height:100%">
+                    <h1 id="headline" style="margin: 5%; font-size: 250%; width: 100%; flex-basis: 0;flex-grow: 1;">
+                        NEWS
+                    </h1>
+                    <main id="details" style=" margin: 5%; font-size: 140%;flex-basis: 0;flex-grow: 1;">
+                        For the last couple of years, investors have learned how artificial intelligence (AI) is paving the way for a new frontier in the technology sector. At this point, it's common knowledge that AI is used for developing software, building large language models (LLMs), and even training autonomous vehicles.
+                    </main>
+                    <div style="height:75%; display: flex; flex:3; flex-direction:column;justify-content: flex-end">
+                        <div id="comment1" class="comment">
+                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 16V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V14C20 15.1 19.1 16 18 16H8L4 20Z" stroke="black" stroke-width="2"/>
+                                <circle cx="8" cy="10" r="1.5" fill="black"/>
+                                <circle cx="12" cy="10" r="1.5" fill="black"/>
+                                <circle cx="16" cy="10" r="1.5" fill="black"/>
+                              </svg>
+                              
+                        </div>
+                        <div id="comment2" class="comment">
+                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 16V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V14C20 15.1 19.1 16 18 16H8L4 20Z" stroke="black" stroke-width="2"/>
+                                <circle cx="8" cy="10" r="1.5" fill="black"/>
+                                <circle cx="12" cy="10" r="1.5" fill="black"/>
+                                <circle cx="16" cy="10" r="1.5" fill="black"/>
+                              </svg>
+                        </div>
+                        <div id="comment3" class="comment">
+                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 16V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V14C20 15.1 19.1 16 18 16H8L4 20Z" stroke="black" stroke-width="2"/>
+                                <circle cx="8" cy="10" r="1.5" fill="black"/>
+                                <circle cx="12" cy="10" r="1.5" fill="black"/>
+                                <circle cx="16" cy="10" r="1.5" fill="black"/>
+                              </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -41,6 +108,59 @@
             .then(data => {
                 document.getElementById('radio-placeholder').innerHTML = data;
             });
+        // fetch('graph location here')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('graph-placeholder').innerHTML = data;
+        //     });
+
+        let counter = 0;
+        let multiplier = 1;
+        let stockPrice = 500.03;
+
+        function updateDisplay() {
+            document.getElementById('counter-value').textContent = counter;
+            document.getElementById('multiplier').textContent = `x${multiplier}`;
+            document.getElementById('dollar-value').textContent = `$${(counter * stockPrice).toFixed(2)}`;
+        }
+
+        document.getElementById('increase').addEventListener('click', () => {
+            counter += multiplier;
+            if (counter > 99999) {
+                counter = 99999;
+            }
+            updateDisplay();
+        });
+
+        document.getElementById('reset').addEventListener('click', () => {
+            counter = 0 ;
+            updateDisplay();
+        });
+
+        document.getElementById('decrease').addEventListener('click', () => {
+            if (counter > 0) {
+                counter -= multiplier;
+            }
+            if (multiplier > counter) {
+                counter = 0;
+            }
+            updateDisplay();
+        });
+
+        document.getElementById('multiplier').addEventListener('click', () => {
+            if (multiplier === 1) {
+                multiplier = 10;
+            } else if (multiplier === 10) {
+                multiplier = 100;
+            } else if (multiplier === 100) {
+                multiplier = 1000;
+            } else {
+                multiplier = 1;
+            }
+            updateDisplay();
+        });
+
+        updateDisplay();
     </script>
 </body>
 </html>

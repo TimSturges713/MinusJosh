@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #7cff72;
+    background-color: #5a9156;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,26 +20,13 @@ body {
     height: 90vh;
 }
 
-.sidebar {
-    width: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-.sidebar button {
-    width: 90%;
-    aspect-ratio: 1/1;
-    border: 2px solid black;
-    border-radius: 10px;
-    background: white;
-}
 
 .screen{
     flex: 2;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 100%;
 }
 
 .center{
@@ -56,11 +43,12 @@ body {
     border: 2px solid black;
     border-radius: 15px;
     background: white;
-    margin-left: 2%;
+    margin-left: 20px;
 }
 
 .bottom-box {
-    flex: 1;
+    flex: 3;
+    flex-direction: row;
     border: 2px solid black;
     border-radius: 15px;
     background: white;
@@ -69,6 +57,39 @@ body {
     align-items: center;
 }
 
+.tri-flex {
+    display: flex;
+    flex: 3;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tri-flex-col {
+    display: flex;
+    flex: 3;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-top: 8px;
+}
+.bi-flex {
+    display: flex;
+    flex: 3;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.counter-flex {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+
 .top-box {
     flex-basis: 0;
     flex-grow: 1;
@@ -76,7 +97,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom:2%;
+    margin-bottom: 20px;
 }
 
 .radio-container {
@@ -95,28 +116,58 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .buy-sell-buttons button {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border: 2px solid black;
-    border-radius: 10px;
+    border-radius: 15px;
     background: white;
+    box-shadow: 0px 4px 0px black;
+    font-size: 20px;
+}
+
+.buy-sell-buttons button:hover {
+    box-shadow: 0px 2px 0px black;
+    margin-top: +2px;
+    margin-bottom: -2px;
+}
+
+.buy-sell-buttons button:active {
+    box-shadow: 0px 0px 0px black;
+    margin-top: +4px;
+    margin-bottom: -4px;
 }
 
 .news {
-    flex: 1;
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     border: 2px solid black;
     border-radius: 15px;
     background: white;
     flex-basis: 0;
     flex-grow: 1;
-    margin-left: 2%;
+    margin-left: 20px;
+    padding-bottom: 5px; 
 }
 
-@media (max-width: 768px) {
+.comment {
+    border: 2px solid black;
+    border-radius: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 25%;
+}
+
+
+
+/* @media (max-width: 768px) {
     .container {
         flex-direction: column;
         height: auto;
@@ -136,4 +187,68 @@ body {
     .bottom-box {
         flex-direction: column;
     }
+} */
+
+.counter-body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
+.counter-btn {
+    width: 50px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0px 4px 0px black;
+    font-size: 20px;
+}
+
+.counter-btn:hover {
+    box-shadow: 0px 2px 0px black;
+    transform: translate(0, 2px);
+}
+
+.counter-btn:active {
+    box-shadow: 0px 0px 0px black;
+    transform: translate(0, 4px);
+}
+
+.reset {
+    width: 80px;
+}
+
+#counter-value {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#multiplier {
+    font-size: 18px; 
+}
+
+#increase {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#decrease {
+    font-size: 24px;
+    font-weight: bold;
 }
