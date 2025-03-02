@@ -47,11 +47,7 @@ function displayNews(company){
     var headline = session.companies[company].headline;
     var content = session.companies[company].content;
     let news_div = document.getElementById("news");
-    news_div.innerHTML = "";
-    
-    headline.textContent = news;
-    news_div.appendChild(headline);
-
+    news_div.textContent = `Headline: ${headline}\nContent: ${content}`;
 }
 
 function buyStock(stock, amount) {
