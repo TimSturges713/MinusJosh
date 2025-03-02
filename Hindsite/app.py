@@ -10,6 +10,7 @@ import os
 from dotenv import load_dotenv
 import json
 
+temp_dict = dict()
 # Load environment variables from .env file
 load_dotenv()
 
@@ -23,9 +24,9 @@ app.secret_key = os.getenv("SESSION_KEY")  # Required for session handling
 def get_session():
     """Retrieve session data for frontend"""
     return jsonify({
-        "user": session["user"],
-        "current_period": session["current_period"],
-        "companies": session["companies"],
+        "user": temp_dict["user"],
+        "current_period": temp_dict["current_period"],
+        "companies": temp_dict["companies"],
         })
 
 # to update session data
@@ -72,6 +73,26 @@ def initialize_game(username):
                                             "spent": 0,
                                             "earned": 0 
                                             }
+    temp_dict = session
+    session.clear()
+
+def contains_tuple(data):
+    """Perform a DFS search on nested dictionaries to find a tuple."""
+    stack = [data]  # Stack for iterative DFS
+
+    while stack:
+        current = stack.pop()  # Get the last added element (LIFO)
+
+        if isinstance(current, dict):  # If it's a dictionary, explore its values
+            stack.extend(current.values())  # Add values to the stack
+        
+        elif isinstance(current, list):  # If it's a list, explore its elements
+            stack.extend(current)
+        
+        elif isinstance(current, tuple):  # If it's a tuple, return True
+            return True
+
+    return False  # No tuple found
 
 ## -------------------- GAME LOGIC --------------------
 

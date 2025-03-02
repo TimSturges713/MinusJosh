@@ -143,6 +143,10 @@ def generate_pos_comment(headline, public_perception, old_comments):
             },
         )
         comment = response.parsed
+        if isinstance(coomment.likes, str):
+            comment.likes = int(comment.likes)
+    except (ValueError, TypeError):
+        commend = Commend(comment="erorr generatedfsgtewrds", likes=0)
     except Exception as e:
         print(e)
         with open(backup_file, "w") as f:
@@ -185,6 +189,10 @@ def generate_neg_comment(headline, public_perception, old_comments):
             },
         )
         comment = response.parsed
+        if isinstance(coomment.likes, str):
+            comment.likes = int(comment.likes)
+    except (ValueError, TypeError):
+        commend = Commend(comment="erorr generatedfsgtewrds", likes=0)
     except Exception as e:
         with open(backup_file, "w") as f:
             # Use .dump to write database contents to file
@@ -308,7 +316,7 @@ def game_start_gen():
         cursor.execute(f"""
         SELECT headline, details, public_perception, technical_impact, id FROM headlines WHERE industry_id = ? ORDER BY RANDOM()
         """, (industry_id,))
-        
+
         per_dat = [tuple(row) for row in cursor.fetchall()]  # Convert fetched rows into a list of tuples
         print(f"PERDATY {industry_map[industry_id]} OF : {per_dat}")
 
@@ -318,7 +326,7 @@ def game_start_gen():
             stocks[company[0]] = {
                 "start_price": company[1],
                 "emp_amt": company[2],
-                "industry": industry_map[industry_id],
+                "industry": str(industry_map[industry_id]),
                 "acronym": company[3]
             }
             price = company[1]
