@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, jsonify, session
 import random
 from copy import deepcopy
 from stock_data import get_mock_stock_trends
-from gemini_ai import generate_hints
+from gemini_ai import generate_data, get_gemini_initial_data
+from stock_data import get_stock_trends
 import os
 from dotenv import load_dotenv
 
@@ -50,7 +51,6 @@ def initialize_game(gamemode, username):
     session["industries"] = gemini_init_data["industries"]
     session["companies"] = gemini_init_data["companies"]
 
-    
     # Company data structure setup
     # session["companies"][company_name]["price"] = current_stock_cost
     # session["companies"][company_name]["industry"] = industry_name
@@ -60,8 +60,8 @@ def initialize_game(gamemode, username):
     #                                                             "comments": {comment:"Comment text", likes:likes_amt},  {comment:"Comment text", likes:likes_amt}, ...},
     #                                                             "price": stock_cost
     #                                                             }
-    # 
 
+    # Initialize user portfolio
     for company in session["companies"].keys():    
         session["user"]["portfolio"][company] = { 
                                             "amount": 0, 
@@ -130,11 +130,12 @@ def advance():
     if session["current_period"] < 10:
         session["current_period"] += 1
         for company in session["companies"].keys():
-            headline, comment, public_perception, technical_impact = generate_data(session[company], company)
-            session["companies"][company]["price"] = new_data["price"]
+            headline, comments, public_perception, technical_impact = generate_data(session[company], company)
+            new_price = get_stock_trends(headline, comments, public_perception, technical_impact)
+            session["companies"][company]["price"] = new_price
             session["companies"][company]["history"][session["current_period"]]["headline"] = headline
             session["companies"][company]["history"][session["current_period"]]["comments"] = comments
-            session["companies"][company]["history"][session["current_period"]]["price"] = new_data["price"]
+            session["companies"][company]["history"][session["current_period"]]["price"] = new_price
 
         return jsonify({"current_period": (session["current_period"] + 1), "session": session})
     else:
