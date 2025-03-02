@@ -74,6 +74,8 @@ def generate_comment(headline, public_perception, old_comments):
     Go in depth with how someone may view this headline with that personality, don't be surface level, get deep inside that 
     character and come up with a distinct comment. Make the comment different than the old comments if there are any. Avoid using same phrasing and speech patterns.
     Try and avoid describing yourself, or things that follow the pattern of "As a ______" or "With a job in _______". Just write the comment as if you were the person you're pretending to be.
+    Remember that even though the public may find an announcement good, they may still have negative comments, and vice versa. Just make sure that
+    in these cases, the comments that don't align with the public's perception have less likes. Make sure that at least one comment supports the public's perception, and at least one comment does not.
     """
 
     try:
@@ -126,10 +128,10 @@ def generate_trend(data):
 def game_start_gen():
     stocks = dict()
     prompt = f"""
-    Retrieve ten random well-known companies (with one word names) on the stock market and their respective costs.
-    Randomly offset these companies stock prices by about 1-10% of their current value, raising it or lowering it.
-    Then list the company's names and their offset stock prices. List them with nothing else other than separating company
-    name and stock value by a comma. Each new line is a different company and each line ends with a comma.
+    Make a list of ten random made-up companies (with one word names less than 30 characters) on the stock market, their stock market acronym, and their respective costs.
+    Randomly make these companies stock prices from 1 cent to 1000 dollars.
+    Then list the company's names, the stock acronym, and their stock prices. List them with nothing else other than separating company
+    name, stock value, and stock acronym by a comma. Each new line is a different company and each line ends with a comma.
     """
     try:
         response = client.models.generate_content(
@@ -153,7 +155,7 @@ comp_dat = {"price": 192, "industry": "Military", "employees": 342, "history": {
 
 company_n = "Appian Technologies"
 head, com, public, technical = generate_data(comp_dat, company_n)
-print(f"\nHEADLINE: {head.title}\n\n")
+print(f"\nHEADLINE: {head.title}\nDETAILS: {head.detail}\n")
 print("COMMENTS:")
 for commment in com:
     print(f"\t{commment.likes} likes: {commment.comment}\n\n")
