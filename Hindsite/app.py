@@ -57,11 +57,7 @@ def initialize_game(username):
         session["companies"][res] = stocks[res]
 
     for z in range(1, 11):
-        # print(f"SECOANDLARY : z={z} : ->>> {periods}")
         session[z] = periods[z]
-    # for res in stocks.keys():
-        # print(f"\n\n{res}")    
-        # print(session[1][res]) 
 
     # Initialize user portfolio
     for res in stocks.keys():
@@ -116,6 +112,7 @@ def game_page():
 @app.route("/end_game")
 def end_game():
     session.clear()  # Clear session data
+    temp_dict.clear()  # Clear the real (temp) dictionary of data ;)
     return render_template("menu.html")
 
 # Buy stock
