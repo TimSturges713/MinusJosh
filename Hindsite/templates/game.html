@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game UI</title>
-    <link rel="stylesheet" href="../static/game_style.css">
-    <!--  Chart.js for displaying graphical data  -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='game_style.css') }}">
+        <!--  Chart.js for displaying graphical data  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <!DOCTYPE html>
@@ -13,13 +13,11 @@
 </head>
 <body>
     <div class="container">
-        
-    
         <div class="screen">
             <div class="center">
                 <div class="top-box">
                     <div class="radio-container">
-                        <div id="radio-placeholder"></div>
+                       {% include 'company_radio.html' %}
                     </div>
                     <div class="main-box" style="position:relative; padding:10px">
                         <h1 id="company-name" style="font-size: 250%; text-align: center;font-family: 'Trebuchet MS', sans-serif">
@@ -400,11 +398,11 @@
         });
 
 
-        fetch('../templates/objects/company_radio.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('radio-placeholder').innerHTML = data;
-            });
+        // fetch('../templates/objects/company_radio.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('radio-placeholder').innerHTML = data;
+        //     });
         // fetch('graph location here')
         //     .then(response => response.text())
         //     .then(data => {
