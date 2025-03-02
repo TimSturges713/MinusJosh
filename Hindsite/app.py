@@ -45,33 +45,28 @@ def initialize_game(gamemode, username):
     "portfolio": {}
     }
 
-    gemini_generate_companies()
+    ### Initialize companies and industries
+    gemini_init_data = get_gemini_initial_data(gamemode)
+    session["industries"] = gemini_init_data["industries"]
+    session["companies"] = gemini_init_data["companies"]
+
+    
+    # Company data structure setup
+    # session["companies"][company_name]["price"] = current_stock_cost
+    # session["companies"][company_name]["industry"] = industry_name
+    # session["companies"][company_name]["employees"] = num_of_employees
+    # session["companies"][company_name]["history"][period_num] = {
+    #                                                             "headline": "Headline text",
+    #                                                             "comments": {comment:"Comment text", likes:likes_amt},  {comment:"Comment text", likes:likes_amt}, ...},
+    #                                                             "price": stock_cost
+    #                                                             }
+    # 
 
     for company in session["companies"].keys():    
         session["user"]["portfolio"][company] = { 
                                             "amount": 0, 
                                             "profit": 0 
                                             }
-
-
-    ### Initialize companies and industries
-    # match gamemode:
-    #     case _: # Default gamemode (normal)   
-    #         industries = ["Technology", "Energy", "Automotive", "Healthcare", "Finance"]
-    #         com = ["TechCorp", "CyberSecure", "AIFrontier", "EcoEnergy", "GreenFusion", 
-    #         "HyperAuto", "DriveWorks", "MediHealth", "BioGenix", "FinTrust", "WealthWell"]
-    # session["companies"] = dict()
-    # for industry in industries:
-    #     session["industries"][industry] = dict()
-
-    # for company in com:
-    #     history_dict = {1: tuple((stock_value(company), []))}
-    #     random_employee = random.randint(50, 100000) # random employee size
-    #     session["companies"][company] = {
-    #                                     "price": 100, 
-    #                                     "employee_number": random_employee, 
-    #                                     "history": history_dict 
-    #                                     }
 
 ## -------------------- GAME LOGIC --------------------
 
@@ -135,8 +130,11 @@ def advance():
     if session["current_period"] < 10:
         session["current_period"] += 1
         for company in session["companies"].keys():
-            session["companies"][company]["price"] = get_new_stock_price(company)
-            session["companies"][company]["history"][session["current_period"]] = tuple((session["companies"][company]["price"], get_headline(company)))
+            headline, comment, public_perception, technical_impact = generate_data(session[company], company)
+            session["companies"][company]["price"] = new_data["price"]
+            session["companies"][company]["history"][session["current_period"]]["headline"] = headline
+            session["companies"][company]["history"][session["current_period"]]["comments"] = comments
+            session["companies"][company]["history"][session["current_period"]]["price"] = new_data["price"]
 
         return jsonify({"current_period": (session["current_period"] + 1), "session": session})
     else:
