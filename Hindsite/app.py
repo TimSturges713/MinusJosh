@@ -47,7 +47,7 @@ def initialize_game(gamemode, username):
     }
 
     ### Initialize companies and industries
-    gemini_init_data = get_gemini_initial_data(gamemode)
+    gemini_init_data = game_start_gen(gamemode)
     session["industries"] = gemini_init_data["industries"]
     session["companies"] = gemini_init_data["companies"]
 
@@ -55,6 +55,7 @@ def initialize_game(gamemode, username):
     # session["companies"][company_name]["price"] = current_stock_cost
     # session["companies"][company_name]["industry"] = industry_name
     # session["companies"][company_name]["employees"] = num_of_employees
+    # session["companies"][company_name]["stock_name"] = acronym
     # session["companies"][company_name]["history"][period_num] = {
     #                                                             "headline": "Headline text",
     #                                                             "comments": {comment:"Comment text", likes:likes_amt},  {comment:"Comment text", likes:likes_amt}, ...},
