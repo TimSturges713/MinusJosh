@@ -123,10 +123,10 @@ def generate_trend(data):
 def game_start_gen():
     stocks = dict()
     prompt = f"""
-    Retrieve ten random well-known companies (with one word names) on the stock market and their respective costs.
+    Retrieve ten random well-known companies (with one word names) on the stock market, their stock market acronym and their respective costs.
     Randomly offset these companies stock prices by about 1-10% of their current value, raising it or lowering it.
     Then list the company's names and their offset stock prices. List them with nothing else other than separating company
-    name and stock value by a comma. Each new line is a different company and each line ends with a comma.
+    name, stock value, and stock acronym by a comma. Each new line is a different company and each line ends with a comma.
     """
     try:
         response = client.models.generate_content(
@@ -136,8 +136,8 @@ def game_start_gen():
         stock = response.text
         stock = stock.split(",")
         flag = 0
-        for c in range(0, stocks.length(), 2):
-            stocks[stock[c]] = stock[c+1]
+        for c in range(0, stocks.length(), 3):
+            stocks[stock[c]] = {stock[c+1]: stock[c+2]}
         return stocks
     except Exception as e:
         return "GEMINI AI RESPONSE FAILURE"
