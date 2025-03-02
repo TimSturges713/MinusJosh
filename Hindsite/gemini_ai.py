@@ -72,6 +72,8 @@ def generate_comment(headline, public_perception):
     This comment will align with the public's perception and accurately describe how they feel.
     Depending on how aligned this comment is with the public's views, the more likes they'll have.
     Format this answer into a JSON object with comment and likes as the two attributes in the object.
+    I'm gonna prompt this prompt multiple times, so don't fall into patterns when generating these comments.
+    Pretend that there's been multiple comments produced beforehand so make sure each one you make is unique.
     """
     try:
         response = client.models.generate_content(
