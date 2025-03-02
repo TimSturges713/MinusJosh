@@ -6,21 +6,22 @@ def get_stock_trends(company_price, public_perception, technical_impact):
     points = dict()
     pub_price = 0
     tech_price = 0
-    tmp_price = company_price
+    p_price = company_price
+    t_price = company_price
+
     for i in range(period):
         if public_perception > 10:
-            pub_price = random.uniform(1.1, 1.3) * tmp_price
+            pub_price = random.uniform(1.1, 1.3) * p_price
         else:
-            pub_price = random.uniform(0.75, 0.9) * tmp_price
+            pub_price = random.uniform(0.75, 0.9) * p_price
         if technical_impact > 10:
-            tech_price = random.uniform(1.1, 1.3) * company_price
+            tech_price = random.uniform(1.1, 1.3) * t_price
         else:
-            tech_price = random.uniform(0.75, 0.9) * company_price
+            tech_price = random.uniform(0.75, 0.9) * t_price
         points[i] = pub_price
-        tmp_price = pub_price
+        p_price = pub_price
+        t_price = tech_price
     points[len(points)-1] = (tech_price + pub_price)/2
     company_price = points[len(points)-1]
     
     return points, company_price
-      
-    
