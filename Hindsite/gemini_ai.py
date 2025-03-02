@@ -2,6 +2,7 @@ from google import genai
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
+import json
 import random
 
 # Load environment variables from .env file
@@ -132,29 +133,16 @@ def generate_trend(data):
     
 
 def game_start_gen():
-    stocks = dict()
+    
     prompt = f"""
-    Make a list of ten random made-up companies (with one word names less than 30 characters) on the stock market, their stock market acronym, and their respective costs.
-    Randomly make these companies stock prices from 1 cent to 1000 dollars. Do not create any subscripts, just make a list of the companies and return that.
-    Then list the company's names, the stock acronym, and their stock prices. List them with nothing else other than separating company
-    name, stock value, and stock acronym by a comma. Each new line is a different company and each line ends with a comma.
+    Retrieve ten random made-up companies (with one word names, limit to 13 characters), their stock market acronym and their respective stock costs.
+    Then list the company's names and their stock prices and their acronym in a JSON object. The stock price is between 1 cent and 1000 dollars.
     """
     try:
-        response = client.models.generate_content(
-            model='gemini-2.0-flash', 
-            contents=prompt,
-            config={
-            'response_mime_type': 'application/json',
-            'response_schema': Company,
-            },
-        )
-        stock = response.text
-        stock = stock.strip().split(",")
-        for c in range(0, len(stock), 3):
-            stocks[stock[c]] = {stock[c+1]: stock[c+2]}
-        return stocks
+        response = model.generate_content(prompt)
+
+        generated_text = response.text
+        data = json.loads(generated_text)
+        return data
     except Exception as e:
         return "GEMINI AI RESPONSE FAILURE"
-
-
-print(game_start_gen())

@@ -25,3 +25,4 @@ def get_stock_trends(company_price, public_perception, technical_impact):
     company_price = points[len(points)-1]
     
     return points, company_price
+
