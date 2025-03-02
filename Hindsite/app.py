@@ -24,7 +24,6 @@ def get_session():
         "user": session["user"],
         "current_period": session["current_period"],
         "companies": session["companies"],
-        "industries": session["industries"]
         })
 
 # to update session data
@@ -46,19 +45,19 @@ def initialize_game(gamemode, username):
     "portfolio": {}
     }
 
-    ### Initialize companies and industries
+    ### Initialize companies
     gemini_init_data = game_start_gen(gamemode)
-    session["industries"] = gemini_init_data["industries"]
-    session["companies"] = gemini_init_data["companies"]
+    for res in gemini_init_data:
+        session["companies"][res["name"]] = res
 
     # Company data structure setup
+    # session["companies"][company_name]["name"] = company_name # ik its redundant but its here so deal w/ it
     # session["companies"][company_name]["price"] = current_stock_cost
-    # session["companies"][company_name]["industry"] = industry_name
     # session["companies"][company_name]["employees"] = num_of_employees
     # session["companies"][company_name]["stock_name"] = acronym
     # session["companies"][company_name]["history"][period_num] = {
     #                                                             "headline": "Headline text",
-    #                                                             "comments": {comment:"Comment text", likes:likes_amt},  {comment:"Comment text", likes:likes_amt}, ...},
+    #                                                             "comments": 0:{comment:"Comment text", likes:likes_amt},  1:{comment:"Comment text", likes:likes_amt}, ...},
     #                                                             "price": stock_cost
     #                                                             }
 

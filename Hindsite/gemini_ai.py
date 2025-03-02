@@ -24,6 +24,16 @@ class Company(BaseModel):
     stock_value: float
     stock_acronym: str
 
+class CompanyFull(BaseModel):
+    name: str
+    price: float
+    employees: int
+    stock_name: str
+
+
+class GameStart(BaseModel):
+    companies: list[CompanyFull]
+
 
 # Generate AI headlines for company stories
 def generate_data(company_data, company_name):
@@ -133,15 +143,26 @@ def generate_trend(data):
     
 
 def game_start_gen():
-    
+
     prompt = f"""
-    Retrieve ten random made-up companies (with one word names, limit to 13 characters), their stock market acronym and their respective stock costs.
-    Then list the company's names and their stock prices and their acronym in a JSON object. The stock price is between 1 cent and 1000 dollars.
+    Retrieve 50 random made-up companies (with a name limit of 30 characters). The company needs to have their stock market acronym, their respective stock costs, and the number of their employees.
+    Then return the industries with their name, and the name of all the companies that are in said industry. Also return the Companies with their Company name, their stock prices, the number of employees, and their acronym in a JSON object. The stock price is between 1 cent and 1000 dollars.
     """
     try:
-        response = client.models.generate_content(prompt)
+        response = client.models.generate_content(
+            model='gemini-2.0-flash', 
+            contents=prompt,
+        config={
+            'response_mime_type': 'application/json',
+            'response_schema': GameStart,
+            },
+        )
+
         generated_text = response.text
         data = json.loads(generated_text)
-        return data
+        random.shuffle(results["companies"])
+        return results["companies"][:10]
+
     except Exception as e:
+        print(e)
         return "GEMINI AI RESPONSE FAILURE"
