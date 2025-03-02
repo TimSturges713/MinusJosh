@@ -52,6 +52,10 @@ def generate_headlines(data):
     except Exception as e:
         headline = "GEMINI AI RESPONSE FAILURE"
     (public_perception, technical_impact) = generate_trend(headline)
+    comment = generate_comment(headline, public_perception)
+    return headline, comment, public_perception, technical_impact
+
+
 
 def generate_comment(headline, public_perception):
     prompt = f"""
@@ -87,7 +91,7 @@ def generate_trend(data):
     public_perception = 0, technical_impact = 0
     prompt = f"""
     Given the following headline JSON object:
-    - HEADLINE1: ${data}
+    - HEADLINE: ${data}
 
     Based on the headline and the way it describes the company's changes and possible problems, 
     generate two constants that describe the public's perception of the company(1-20, 1 being most negative, 20 being most positive)
