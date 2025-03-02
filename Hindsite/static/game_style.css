@@ -18,6 +18,7 @@ body {
     display: flex;
     width: 90%;
     height: 90vh;
+    margin-top: 2%;
 }
 
 
@@ -39,7 +40,9 @@ body {
 }
 
 .main-box {
-    flex: 1;
+    display: flex;
+    flex: 3;
+    flex-direction:column;
     border: 2px solid black;
     border-radius: 15px;
     background: white;
@@ -47,14 +50,14 @@ body {
 }
 
 .bottom-box {
-    flex: 3;
+    flex: 5;
     flex-direction: row;
     border: 2px solid black;
     border-radius: 15px;
     background: white;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    padding:20px;
 }
 
 .tri-flex {
@@ -66,7 +69,7 @@ body {
 
 .tri-flex-col {
     display: flex;
-    flex: 3;
+    flex: 2;
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 8px;
@@ -112,11 +115,29 @@ body {
     border-radius: 10px;
 }
 
+.bottom-box button {
+    border: 2px solid black;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0px 4px 0px black;
+    font-size: 20px;
+}
+
+.bottom-box button:hover {
+    box-shadow: 0px 2px 0px black;
+    transform: translate(0, 2px);
+}
+
+.bottom-box button:active {
+    box-shadow: 0px 0px 0px black;
+    transform: translate(0, 4px);
+}
+
 .buy-sell-buttons {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-right: 15px;
+    margin-left: 0px;
 }
 
 .buy-sell-buttons button {
@@ -131,21 +152,13 @@ body {
 
 .buy-sell-buttons button:hover {
     box-shadow: 0px 2px 0px black;
-    margin-top: +2px;
-    margin-bottom: -2px;
 }
 
 .buy-sell-buttons button:active {
     box-shadow: 0px 0px 0px black;
-    margin-top: +4px;
-    margin-bottom: -4px;
 }
 
 .news {
-    flex: 2;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     border: 2px solid black;
     border-radius: 15px;
     background: white;
@@ -162,32 +175,67 @@ body {
     margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
-    height: 25%;
+    height: 20%;
+    vertical-align: middle;
+    line-height:normal;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size:80%;
+    box-shadow: 0px 4px 0px black;
 }
 
+.likes {
+    margin-top:10px;
+    margin-right:10px;
+    text-align: center;
+    font-size:150%;
+}
 
+.comment-text {
+    display: flex;
+    align-items: center;
+    margin:10px;
+    margin-left: 15px;
+    margin-right: 0px;
+}
 
-/* @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        height: auto;
-    }
+.financial-block {
+    width:50%;
+    height:100%; 
+    display:flex; 
+    flex:2; 
+    flex-direction:column; 
+    justify-content:space-between;
+    margin-left: 10px;
+}
 
-    .sidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-evenly;
-    }
+.financial-point2 {
+    border: 2px solid black;
+    border-radius: 15px; 
+    box-shadow: 0px 4px 0px black;
+    height: 45%;
+    vertical-align: middle;
+    text-align: center;
+    line-height:normal;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size:120%;
+    font-weight: bold;
+    padding: 5px;
+}
 
-    .main, .news {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    .bottom-box {
-        flex-direction: column;
-    }
-} */
+.financial-point1 {
+    border: 2px solid black;
+    border-radius: 15px; 
+    box-shadow: 0px 4px 0px black;
+    height: 10%;
+    vertical-align: middle;
+    text-align: center;
+    line-height:normal;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size:120%;
+    font-weight: bold;
+    margin: 2%;
+    padding: 5px;
+}
 
 .counter-body {
     font-family: Arial, sans-serif;
@@ -195,9 +243,6 @@ body {
     justify-content: center;
     align-items: center;
     margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 .counter-container {
@@ -208,6 +253,7 @@ body {
     padding: 20px;
     border: 2px solid black;
     border-radius: 15px;
+    box-shadow: 0px 4px 0px black;
 }
 
 .counter-btn {

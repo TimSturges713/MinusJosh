@@ -1,21 +1,18 @@
-function startGame(gamemode) {
-    var username = document.getElementById("username").value;
-    const data = {
-        "gamemode": gamemode,
-        "username": username
-    };
-
+function startGame() {
+    var username = document.getElementById("username").value || "Player";  // Default to "Player" if empty
+    
     fetch('/start_game', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ username: username }),  // Send JSON data
     })
-    .then(response => response.text())  // Change to text() since Flask returns an HTML page
-    .then(() => {
-        console.log('Game started');
-        window.location.href = "/game";  // Redirect to game.html
+    .then(response => response.json())  // Expect JSON response
+    .then(data => {
+        if (data.redirect) {
+            window.location.href = data.redirect;  // Redirect to game.html
+        }
     })
     .catch((error) => {
         console.error('Error starting game:', error);
