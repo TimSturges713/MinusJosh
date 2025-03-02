@@ -50,6 +50,30 @@ function displayNews(company){
     news_div.textContent = `Headline: ${headline}\nContent: ${content}`;
 }
 
+function displayComments(company){
+    var comments = session.companies[company].comments;
+    
+    for(i = 1; i <= 3; i++){
+        if(i == 1){
+            var comment_div = document.getElementById("comment1");
+            var likes_div = document.getElementById("likes1");
+        }
+        else if(i == 2){
+            var comment_div = document.getElementById("comment2");
+            var likes_div = document.getElementById("likes2");
+        }
+        else{
+            var comment_div = document.getElementById("comment3");
+            var likes_div = document.getElementById("likes3");
+        }
+        var comment = comments[i];
+        var text = comment[0];
+        var likes = comment[1];
+        comment_div.textContent = text;
+        likes_div.textContent = likes;
+    }
+}
+
 function buyStock(stock, amount) {
     fetch('/buy', {
         method: 'POST',
