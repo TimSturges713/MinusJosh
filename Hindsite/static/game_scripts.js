@@ -54,13 +54,13 @@ function displayNews(company){
 
 }
 
-function buyStock(stock, amount) {
+function buyStock(stock, amount, current_period) {
     fetch('/buy', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ stock: stock, amount: amount }),
+        body: JSON.stringify({ stock: stock, amount: amount, current_period: current_period }),
     })
     .then(response => response.json())
     .then(data => {
