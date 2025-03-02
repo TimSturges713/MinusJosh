@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Stock Chart</title>
+    <!--  Chart.js for displaying graphical data  -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h2>Select Data to Display:</h2>
+    <label>
+        <input type="radio" name="dataSet" value="data1" checked> Dataset 1
+    </label>
+    <label>
+        <input type="radio" name="dataSet" value="data2"> Dataset 2
+    </label>
+    <label>
+        <input type="radio" name="dataSet" value="data3"> Dataset 3
+    </label>
+
+    <canvas id="chartCanvas" width="400" height="200"></canvas>
+
+    <script>
+        // Define different datasets
+        const chartData = {
+            data1: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                data: [10, 20, 15, 30, 25]
+            },
+            data2: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                data: [5, 15, 10, 20, 18]
+            },
+            data3: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                data: [8, 12, 20, 25, 22]
+            }
+        };
+
+        // Get chart canvas
+        const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+        // Create initial chart
+        let chart = new Chart(ctx, {
+            type: 'line', // Change to 'bar', 'pie', etc. if needed
+            data: {
+                labels: chartData.data1.labels,
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: chartData.data1.data,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            }
+        });
+
+        // Function to update chart when radio button is clicked
+        function updateChart(datasetKey) {
+            const newData = chartData[datasetKey];
+            chart.data.labels = newData.labels;
+            chart.data.datasets[0].label = `Dataset ${datasetKey.replace('data', '')}`;
+            chart.data.datasets[0].data = newData.data;
+            chart.update(); // Refresh the chart
+        }
+
+        // Event listener for radio buttons
+        document.querySelectorAll('input[name="dataSet"]').forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                updateChart(event.target.value);
+            });
+        });
+    </script>
+
+</body>
+</html>

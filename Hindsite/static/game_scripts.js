@@ -15,11 +15,28 @@ function updateSessionData(data) {
     });
 }
 
+let session = null;
+
 function getSessionData() {
     fetch('/get_session')
         .then(response => response.json())
         .then(data => {
+
             console.log('Session data:', data);
+            session = data;
+            let currentPeriod = session.current_period;
+
+            // Initialize chartData for each company
+            companies.forEach(company => {
+                if (session.companies && session.companies[company]) {
+                    let history = session.companies[company].history;
+
+                    chartData[company] = {
+                        labels: Array.from({ length: currentPeriod }, (_, i) => i + 1),  // Labels: 1 to currentPeriod
+                        data: Object.values(history).slice(0, currentPeriod).map(entry => entry[0]) // Extract prices
+                    };
+                }
+            });
         })
         .catch((error) => {
             console.error('Error getting session data:', error);
@@ -69,3 +86,42 @@ function sellStock(stock, amount) {
         console.error('Error selling stock,):', error);
     });
 }
+
+const chartData = {};
+
+/*  Dynamic Stock Chart  */
+getSessionData();
+
+// Get chart canvas
+const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+// Create initial chart
+let chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: chartData.data1.labels,
+        datasets: [{
+            label: 'Dataset 1',
+            data: chartData.data1.data,
+            borderColor: 'blue',
+            borderWidth: 2,
+            fill: false
+        }]
+    }
+});
+
+// Function to update chart when radio button is clicked
+function updateChart(company) {
+    const newData = chartData[company];
+    chart.data.labels = newData.labels;
+    chart.data.datasets[0].label = `${company} Stock Prices`;
+    chart.data.datasets[0].data = newData.data;
+    chart.update(); // Refresh the chart
+}
+
+// Event listener for radio buttons
+document.querySelectorAll('input[name="dataSet"]').forEach(radio => {
+    radio.addEventListener('change', (event) => {
+        updateChart(event.target.value);
+    });
+});
