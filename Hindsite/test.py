@@ -30,10 +30,10 @@ def generate_data(company_data, company_name):
 
 
     Generate a short update or news announcement/headline on the company that may be randomly positive, negative, or neutral on changes within the company. Updates can range for simple, normal quiet announcements, to un-expected important events.
-    The company may have previous headlines, if so make the new headline based off previous ones, the company can learn from their previous mistakes or go further into failure, you decide. Then give 
-    the new headline for the company. There's only one new headline generated
-    for the company. The headline will be the title, and any added details
-    will be the details. Put the headline in the title part of the JSON object, and the details in the details
+    The company may have previous headlines, if so make the new headline based off previous ones, assuming at least 6 months have past between each headline, and its been more than 6 months since the most recent headline, the company can learn from their previous mistakes or go further into failure, you decide. Then give 
+    the new headline for the company. There's only one new headline generated for the company. 
+    The headline will be the title, and any added details will be the details. 
+    Put the headline in the title part of the JSON object, and the details in the details
     part of the JSON object. Return this in a JSON object.
     """
 
