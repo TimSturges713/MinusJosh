@@ -18,6 +18,10 @@ class Comment(BaseModel):
     comment: str
     likes: int
 
+class Company(BaseModel):
+    name: str
+    stock_value: float
+    stock_acronym: str
 
 
 # Generate AI headlines for company stories
@@ -138,12 +142,14 @@ def game_start_gen():
     try:
         response = client.models.generate_content(
             model='gemini-2.0-flash', 
-            contents=prompt
+            contents=prompt,
+            config={
+            'response_mime_type': 'application/json',
+            'response_schema': Company,
+            },
         )
         stock = response.text
-        stock = stock.split(",")
-        
-        flag = 0
+        stock = stock.strip().split(",")
         for c in range(0, len(stock), 3):
             stocks[stock[c]] = {stock[c+1]: stock[c+2]}
         return stocks
