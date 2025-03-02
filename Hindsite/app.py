@@ -128,7 +128,7 @@ def sell():
 # Advance forward in time
 @app.route("/advance")
 def advance():
-    if session["current_period"] < 10:
+    if session["current_period"] < 7:
         session["current_period"] += 1
         for company in session["companies"].keys():
             headline, comments, public_perception, technical_impact = generate_data(session[company], company)

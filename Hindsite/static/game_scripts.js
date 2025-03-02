@@ -133,6 +133,11 @@ function next_period(){
         if (data.game_over) {
             modal.style.display = "none";
             alert(`Game Over! Final Balance: $${data.final_balance}`);
+            fetch('/end_game')
+            .then(response => response.text())
+            .then(data => {
+                window.location.href = "/menu"
+            })
             // Optionally redirect to a game over screen or reset the game
         }
         else{
@@ -144,6 +149,8 @@ function next_period(){
         }
     })
 }
+
+
 
 // Event listener for radio buttons
 document.querySelectorAll('input[name="dataSet"]').forEach(radio => {
