@@ -89,7 +89,8 @@ def generate_comment(headline, public_perception):
 
 
 def generate_trend(data):
-    public_perception = 0, technical_impact = 0
+    public_perception = 0
+    technical_impact = 0
     prompt = f"""
     Given the following headline JSON object:
     - HEADLINE: ${data}
@@ -99,7 +100,7 @@ def generate_trend(data):
     and the actual impact the news described in the headline may actually have on the functionality of the company
     from a technical standpoint (1-20, 1 being most negative, 20 being most positive). Please just only give the two numbers, nothing else
     as a response, with the public perception first and the technical impact second. Formatted like i,j just being separated
-    by a comma.
+    by a comma. Do not specifically mention stock price or its trends, make it more vague and about the event only.
     """
     try:
         response = client.models.generate_content(
