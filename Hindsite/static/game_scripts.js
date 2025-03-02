@@ -44,7 +44,14 @@ function getSessionData() {
 }
 
 function displayNews(company){
+    var headline = session.companies[company].headline;
+    var content = session.companies[company].content;
+    let news_div = document.getElementById("news");
+    news_div.innerHTML = "";
     
+    headline.textContent = news;
+    news_div.appendChild(headline);
+
 }
 
 function buyStock(stock, amount) {
