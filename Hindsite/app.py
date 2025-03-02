@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify, session
 import random
 from copy import deepcopy
 from stock_data import get_mock_stock_trends
-from gemini_ai import generate_data, get_gemini_initial_data
+from gemini_ai import generate_data, game_start_gen
 from stock_data import get_stock_trends
 import os
 from dotenv import load_dotenv

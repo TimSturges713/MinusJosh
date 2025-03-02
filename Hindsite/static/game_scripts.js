@@ -43,6 +43,10 @@ function getSessionData() {
         });
 }
 
+function displayNews(company){
+    
+}
+
 function buyStock(stock, amount) {
     fetch('/buy', {
         method: 'POST',
