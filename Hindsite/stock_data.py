@@ -2,7 +2,7 @@ import random
     
 def get_stock_trends(company_price, public_perception, technical_impact):
     # the time period between the turns in weeks
-    period = random.randint(5, 10)
+    period = 10
     points = dict()
     pub_price = 0
     tech_price = 0

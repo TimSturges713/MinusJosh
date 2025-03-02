@@ -119,9 +119,43 @@ function updateChart(company) {
     chart.update(); // Refresh the chart
 }
 
+function next_period(){
+    modal = document.getElementById("m")
+    modal.style.display = "block";
+    fetch('/advance', {
+        headers:{
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Advance response:', data);
+        if (data.game_over) {
+            modal.style.display = "none";
+            alert(`Game Over! Final Balance: $${data.final_balance}`);
+            fetch('/end_game')
+            .then(response => response.text())
+            .then(data => {
+                window.location.href = "/menu"
+            })
+            // Optionally redirect to a game over screen or reset the game
+        }
+        else{
+            setTimeout(function() {
+                console.log("Waited for 3 seconds");
+                // Do something after the delay here
+            }, 3000);
+            modal.style.display = "none";   
+        }
+    })
+}
+
+
+
 // Event listener for radio buttons
 document.querySelectorAll('input[name="dataSet"]').forEach(radio => {
     radio.addEventListener('change', (event) => {
         updateChart(event.target.value);
     });
 });
+
