@@ -51,7 +51,7 @@
 
                 <div class="bottom-box">
                     <div class="buy-sell-buttons">
-                        <button><b>Buy</b></button>
+                        <button onclick="buyStock(document.getElementById('comppany-name').innerText,counter)"><b>Buy</b></button>
                         <button><b>Sell</b></button>
                     </div>
                     <div class="counter-body">
@@ -239,31 +239,31 @@
 
         let session = null;
 
-        // function getSessionData() {
-        //     fetch('/get_session')
-        //         .then(response => response.json())
-        //         .then(data => {
+        function getSessionData() {
+            fetch('/get_session')
+                .then(response => response.json())
+                .then(data => {
 
-        //             console.log('Session data:', data);
-        //             session = data;
-        //             let currentPeriod = session.current_period;
+                    console.log('Session data:', data);
+                    session = data;
+                    let currentPeriod = session.current_period;
 
-        //             // Initialize chartData for each company
-        //             companies.forEach(company => {
-        //                 if (session.companies && session.companies[company]) {
-        //                     let history = session.companies[company].history;
+                    // Initialize chartData for each company
+                    companies.forEach(company => {
+                        if (session.companies && session.companies[company]) {
+                            let history = session.companies[company].history;
 
-        //                     chartData[company] = {
-        //                         labels: Array.from({ length: currentPeriod }, (_, i) => i + 1),  // Labels: 1 to currentPeriod
-        //                         data: Object.values(history).slice(0, currentPeriod).map(entry => entry[0]) // Extract prices
-        //                     };
-        //                 }
-        //             });
-        //         })
-        //         .catch((error) => {
-        //             console.error('Error getting session data:', error);
-        //         });
-        // }
+                            chartData[company] = {
+                                labels: Array.from({ length: currentPeriod }, (_, i) => i + 1),  // Labels: 1 to currentPeriod
+                                data: Object.values(history).slice(0, currentPeriod).map(entry => entry[0]) // Extract prices
+                            };
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error getting session data:', error);
+                });
+        }
 
         function buyStock(stock, amount) {
             fetch('/buy', {
@@ -286,7 +286,13 @@
                 console.error('Error buying stock:', error);
             });
 
-            //increase asset value, decrease cash value, increase amount invested, increase stock amount, increase current value, 
+            getSessionData();
+
+            document.getElementById('asset-value').innerText = document.getElementById('asset-value').innerText + (counter * stockPrice);
+            document.getElementById('cash-value').innerText = document.getElementById('cash-value').innerText - (counter * stockPrice);
+            document.getElementById('amount-invested').innerText = session["user"]["portfolio"][document.getElementById('company-name').innerText]["spent"];
+            document.getElementById('stock-amount').innerText = session["user"]["portfolio"][document.getElementById('company-name').innerText]["amount"];
+            document.getElementById('current-value').innerText = session["user"]["portfolio"][document.getElementById('company-name').innerText]["amount"] * session[session['current-period']][document.getElementById('company-name').innerText]["curr_price"];
 
         }
 
@@ -311,7 +317,10 @@
                 console.error('Error selling stock,):', error);
             });
 
-            //increase cash value, decrease asset value, decrease current value, decrease stock amount
+            document.getElementById('asset-value').innerText = document.getElementById('asset-value').innerText - (counter * stockPrice);
+            document.getElementById('cash-value').innerText = document.getElementById('cash-value').innerText + (counter * stockPrice);
+            document.getElementById('stock-amount').innerText = session["user"]["portfolio"][document.getElementById('company-name').innerText]["amount"];
+            document.getElementById('current-value').innerText = session["user"]["portfolio"][document.getElementById('company-name').innerText]["amount"] * session[session['current-period']][document.getElementById('company-name').innerText]["curr_price"];
 
         }
 
@@ -319,29 +328,29 @@
 
         const COMPANY_NAMES = [];
 
-        // getSessionData();
+        getSessionData();
 
         // uses session data to fill global list COMPANY_NAMES to access company
         // sets the radio buttons to the company names
         // sets market chart to be a graph with all 10 data sets
 
-        // Get chart canvas
-        // const ctx = document.getElementById('chartCanvas').getContext('2d');
+        //Get chart canvas
+        const ctx = document.getElementById('chartCanvas').getContext('2d');
 
-        // Create initial chart
-        // let chart = new Chart(ctx, {
-        //     type: 'line',
-        //     data: {
-        //         labels: chartData.data1.labels,
-        //         datasets: [{
-        //             label: 'Dataset 1',
-        //             data: chartData.data1.data,
-        //             borderColor: 'blue',
-        //             borderWidth: 2,
-        //             fill: false
-        //         }]
-        //     }
-        // });
+        //Create initial chart
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.data1.labels,
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: chartData.data1.data,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            }
+        });
 
         // Function to update chart when radio button is clicked
         function updateChart(company) {
@@ -382,9 +391,10 @@
                 }
             })
 
-            //update chart
-            //manually push global period up 1
-            //update headline, comments, and likes
+            updateChart();
+            document.getElementById('headline').innerText = session[session['current_period']][document.getElementById('company-name').innerText]['headline'];
+            document.getElementById('comment1').innerText = session["companies"][document.getElementById('company-name').innerText]
+            //update comments, and likes
 
         }
 
@@ -399,7 +409,7 @@
 
         let counter = 0;
         let multiplier = 1;
-        let stockPrice = 500.03;
+        let stockPrice = 0;
 
         function updateDisplay() {
             document.getElementById('counter-value').textContent = counter;
