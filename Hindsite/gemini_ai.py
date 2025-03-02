@@ -143,7 +143,7 @@ def game_start_gen():
         stock = response.text
         stock = stock.split(",")
         flag = 0
-        for c in range(0, stocks.length(), 3):
+        for c in range(0, len(stock), 3):
             stocks[stock[c]] = {stock[c+1]: stock[c+2]}
         return stocks
     except Exception as e:
