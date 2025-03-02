@@ -34,6 +34,9 @@
 .cr-radio-label:hover {
     background-color: #e3e3e3;
 }
+.cr-radio-label:active {
+    background-color: #ffffff;
+}
 
 .cr-hidden-input {
     display: none;

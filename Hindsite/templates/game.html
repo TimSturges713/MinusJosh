@@ -21,16 +21,40 @@
                     <div class="radio-container">
                         <div id="radio-placeholder"></div>
                     </div>
-                    <div class="main-box">
+                    <div class="main-box" style="position:relative; padding:10px">
+                        <h1 id="company-name" style="font-size: 250%; text-align: center;font-family: 'Trebuchet MS', sans-serif">
+                            Market
+                        </h1>
                         <div id="graph-placeholder" style="max-height:fit-content; max-width:fit-content;"></div>
+                        <div style="width: 97%;position:absolute; bottom: 0px;display:flex; flex:4; flex-direction: row;justify-content: space-between">
+                            <div class="financial-point1">
+                                Amount Invested:<br>
+                                <span id="amount-invested">$0000.00</span>
+                            </div>
+                            <div class="financial-point1">
+                                Stock Amount:<br>
+                                <span id="stock-amount">0000</span>
+                            </div>
+                            <div class="financial-point1">
+                                Current Value:<br>
+                                <span id="current-value">$0000.00</span>
+                            </div>
+                            <div class="financial-point1">
+                                Stock Price:<br>
+                                <span id="stock-price">$0000.00</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                                                 <!-- financial info -->
+
+
                 <div class="bottom-box">
-                    <div style="width:100%">
-
-
+                    <div class="buy-sell-buttons">
+                        <button><b>Buy</b></button>
+                        <button><b>Sell</b></button>
                     </div>
-
                     <div class="counter-body">
                         <div class="counter-container"  style="width: 230px">
                             <div class="counter-flex">
@@ -55,46 +79,142 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="buy-sell-buttons">
-                        <button><b>Buy</b></button>
-                        <button><b>Sell</b></button>
+                    <div class="financial-block">
+                        <div class="financial-point2">
+                            Cash Value:<br>
+                            <span id="cash-value">$0000.00</span>
+                        </div>
+                        <div class="financial-point2">
+                            Asset Value:<br>
+                            <span id="asset-value">$0000.00</span>
+                        </div>
                     </div>
+                    <div class="financial-block">
+                        <div class="financial-point2">
+                            Net Worth:<br>
+                            <span id="net-worth">$0000.00</span>
+                        </div>
+                        <div class="financial-point2">
+                            Net Profit:<br>
+                            <span id="net-profit">-$0000.00</span>
+                        </div>
+                    </div>
+
+
+                    <button style="height:172px; margin-left:10px; aspect-ratio:1/1;">
+                        <svg width="80%" height="80%" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+
+                            <g fill="#000000">
+                            
+                            <path fill-rule="evenodd" d="M4.76 2.5C3.6 1.682 2 2.51 2 3.93v8.14c0 1.419 1.6 2.248 2.76 1.43l5.765-4.07a1.75 1.75 0 000-2.86L4.76 2.5zM3.5 3.93a.25.25 0 01.394-.204l5.766 4.07a.25.25 0 010 .408l-5.766 4.07a.25.25 0 01-.394-.204V3.93z" clip-rule="evenodd"/>
+                            
+                            <path d="M14 3a.75.75 0 00-1.5 0v10a.75.75 0 001.5 0V3z"/>
+                            
+                            </g>
+                            
+                            </svg>
+                    </button>
                 </div>
             </div>
+                                                    <!-- news section -->
+
             <div class="news" style="font-family:Garamond;">
                 <div class="tri-flex-col" style="height:100%">
-                    <h1 id="headline" style="margin: 5%; font-size: 250%; width: 100%; flex-basis: 0;flex-grow: 1;">
-                        NEWS
-                    </h1>
-                    <main id="details" style=" margin: 5%; font-size: 140%;flex-basis: 0;flex-grow: 1;">
-                        For the last couple of years, investors have learned how artificial intelligence (AI) is paving the way for a new frontier in the technology sector. At this point, it's common knowledge that AI is used for developing software, building large language models (LLMs), and even training autonomous vehicles.
-                    </main>
-                    <div style="height:75%; display: flex; flex:3; flex-direction:column;justify-content: flex-end">
-                        <div id="comment1" class="comment">
-                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div>
+                        <h1 id="headline" style="margin: 5%; font-size: 250%; width: 100%; flex-basis: 0;flex-grow: 1;">
+                            This is a super crazy headline about a super crazy company
+                        </h1>
+                        <main id="details" style=" margin: 5%; font-size: 140%;flex-basis: 0;flex-grow: 1;">
+                            For the last couple of years, investors have learned how artificial intelligence (AI) is paving the way for a new frontier in the technology sector. At this point, it's common knowledge that AI is used for developing software, building large language models (LLMs), and even training autonomous vehicles.
+                        </main>
+                    </div>
+                    <div style="height:60%; display: flex; flex:3; flex-direction:column;justify-content: flex-end;">
+                        <div class="comment tri-flex">
+                            <div>
+                            <svg style="margin-top:20px; margin-left:5px" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 16V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V14C20 15.1 19.1 16 18 16H8L4 20Z" stroke="black" stroke-width="2"/>
                                 <circle cx="8" cy="10" r="1.5" fill="black"/>
                                 <circle cx="12" cy="10" r="1.5" fill="black"/>
                                 <circle cx="16" cy="10" r="1.5" fill="black"/>
-                              </svg>
-                              
+                              </svg></div>
+                              <main id="comment1" class="comment-text">
+                                Artificial intelligence would be the ultimate version of Google. The ultimate search engine that would understand everything on the web. It would understand exactly what you wanted, and it would give you the right thing.
+                              </main>
+                              <div class="likes">
+                                <div>
+                                    <svg fill="#000000" height="32px" width="32px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        viewBox="0 0 471.701 471.701" xml:space="preserve">
+                                        <g>
+                                        <path d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1
+                                            c-24.7-24.7-57.6-38.4-92.5-38.4c-34.8,0-67.6,13.6-92.2,38.2c-24.7,24.7-38.3,57.5-38.2,92.4c0,34.9,13.7,67.6,38.4,92.3
+                                            l187.8,187.8c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-3.9l188.2-187.5c24.7-24.7,38.3-57.5,38.3-92.4
+                                            C471.801,124.501,458.301,91.701,433.601,67.001z M414.401,232.701l-178.7,178l-178.3-178.3c-19.6-19.6-30.4-45.6-30.4-73.3
+                                            s10.7-53.7,30.3-73.2c19.5-19.5,45.5-30.3,73.1-30.3c27.7,0,53.8,10.8,73.4,30.4l22.6,22.6c5.3,5.3,13.8,5.3,19.1,0l22.4-22.4
+                                            c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3
+                                            C444.801,187.101,434.001,213.101,414.401,232.701z"/>
+                                        </g>
+                                        </svg>
+                                    </div>
+                                    <span  id="likes1">1000</span>
+                              </div>
                         </div>
-                        <div id="comment2" class="comment">
-                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div class="comment tri-flex">
+                            <div>
+                            <svg style="margin-top:20px; margin-left:5px" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 16V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V14C20 15.1 19.1 16 18 16H8L4 20Z" stroke="black" stroke-width="2"/>
                                 <circle cx="8" cy="10" r="1.5" fill="black"/>
                                 <circle cx="12" cy="10" r="1.5" fill="black"/>
                                 <circle cx="16" cy="10" r="1.5" fill="black"/>
-                              </svg>
+                              </svg></div>
+                              <span class="comment-text" id="comment2" >
+                                Imagine how a medical robot, originally programmed to rid cancer, could conclude that the best way to obliterate cancer is to exterminate humans who are genetically prone to the disease.
+                              </span>
+                              <div class="likes">
+                                <div>
+                                    <svg fill="#000000" height="32px" width="32px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        viewBox="0 0 471.701 471.701" xml:space="preserve">
+                                        <g>
+                                        <path d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1
+                                            c-24.7-24.7-57.6-38.4-92.5-38.4c-34.8,0-67.6,13.6-92.2,38.2c-24.7,24.7-38.3,57.5-38.2,92.4c0,34.9,13.7,67.6,38.4,92.3
+                                            l187.8,187.8c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-3.9l188.2-187.5c24.7-24.7,38.3-57.5,38.3-92.4
+                                            C471.801,124.501,458.301,91.701,433.601,67.001z M414.401,232.701l-178.7,178l-178.3-178.3c-19.6-19.6-30.4-45.6-30.4-73.3
+                                            s10.7-53.7,30.3-73.2c19.5-19.5,45.5-30.3,73.1-30.3c27.7,0,53.8,10.8,73.4,30.4l22.6,22.6c5.3,5.3,13.8,5.3,19.1,0l22.4-22.4
+                                            c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3
+                                            C444.801,187.101,434.001,213.101,414.401,232.701z"/>
+                                        </g>
+                                        </svg>
+                                    </div>
+                                    <span  id="likes2" >1000</span>
+                              </div>
                         </div>
-                        <div id="comment3" class="comment">
-                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div class="comment tri-flex">
+                            <div>
+                            <svg style="margin-top:20px; margin-left:5px" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 16V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V14C20 15.1 19.1 16 18 16H8L4 20Z" stroke="black" stroke-width="2"/>
                                 <circle cx="8" cy="10" r="1.5" fill="black"/>
                                 <circle cx="12" cy="10" r="1.5" fill="black"/>
                                 <circle cx="16" cy="10" r="1.5" fill="black"/>
-                              </svg>
+                              </svg></div>
+                              <main class="comment-text"  id="comment3" >
+                                The real question is, when will we draft an artificial intelligence bill of rights? What will that consist of? And who will get to decide that?
+                              </main>
+                              <div class="likes">
+                                <div>
+                                <svg fill="#000000" height="32px" width="32px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                    viewBox="0 0 471.701 471.701" xml:space="preserve">
+                                    <g>
+                                    <path d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1
+                                        c-24.7-24.7-57.6-38.4-92.5-38.4c-34.8,0-67.6,13.6-92.2,38.2c-24.7,24.7-38.3,57.5-38.2,92.4c0,34.9,13.7,67.6,38.4,92.3
+                                        l187.8,187.8c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-3.9l188.2-187.5c24.7-24.7,38.3-57.5,38.3-92.4
+                                        C471.801,124.501,458.301,91.701,433.601,67.001z M414.401,232.701l-178.7,178l-178.3-178.3c-19.6-19.6-30.4-45.6-30.4-73.3
+                                        s10.7-53.7,30.3-73.2c19.5-19.5,45.5-30.3,73.1-30.3c27.7,0,53.8,10.8,73.4,30.4l22.6,22.6c5.3,5.3,13.8,5.3,19.1,0l22.4-22.4
+                                        c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3
+                                        C444.801,187.101,434.001,213.101,414.401,232.701z"/>
+                                    </g>
+                                    </svg>
+                                </div>
+                                    <span id="likes3">1000</span>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -102,6 +222,184 @@
         </div>
     </div>
     <script>
+        function updateSessionData(data) {
+            fetch('/update_session', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Session updated:', data);
+            })
+            .catch((error) => {
+                console.error('Error updating session:', error);
+            });
+        }
+
+        let session = null;
+
+        // function getSessionData() {
+        //     fetch('/get_session')
+        //         .then(response => response.json())
+        //         .then(data => {
+
+        //             console.log('Session data:', data);
+        //             session = data;
+        //             let currentPeriod = session.current_period;
+
+        //             // Initialize chartData for each company
+        //             companies.forEach(company => {
+        //                 if (session.companies && session.companies[company]) {
+        //                     let history = session.companies[company].history;
+
+        //                     chartData[company] = {
+        //                         labels: Array.from({ length: currentPeriod }, (_, i) => i + 1),  // Labels: 1 to currentPeriod
+        //                         data: Object.values(history).slice(0, currentPeriod).map(entry => entry[0]) // Extract prices
+        //                     };
+        //                 }
+        //             });
+        //         })
+        //         .catch((error) => {
+        //             console.error('Error getting session data:', error);
+        //         });
+        // }
+
+        function buyStock(stock, amount) {
+            fetch('/buy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ stock: stock, amount: amount }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Buy response:', data);
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error buying stock:', error);
+            });
+
+            //increase asset value, decrease cash value, increase amount invested, increase stock amount, increase current value, 
+
+        }
+
+        function sellStock(stock, amount) {
+            fetch('/sell', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ stock: stock, amount: amount }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Sell response:', data);
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error selling stock,):', error);
+            });
+
+            //increase cash value, decrease asset value, decrease current value, decrease stock amount
+
+        }
+
+        const chartData = {};
+
+        const COMPANY_NAMES = [];
+
+        // getSessionData();
+
+        // uses session data to fill global list COMPANY_NAMES to access company
+        // sets the radio buttons to the company names
+        // sets market chart to be a graph with all 10 data sets
+
+        // Get chart canvas
+        // const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+        // Create initial chart
+        // let chart = new Chart(ctx, {
+        //     type: 'line',
+        //     data: {
+        //         labels: chartData.data1.labels,
+        //         datasets: [{
+        //             label: 'Dataset 1',
+        //             data: chartData.data1.data,
+        //             borderColor: 'blue',
+        //             borderWidth: 2,
+        //             fill: false
+        //         }]
+        //     }
+        // });
+
+        // Function to update chart when radio button is clicked
+        function updateChart(company) {
+            const newData = chartData[company];
+            chart.data.labels = newData.labels;
+            chart.data.datasets[0].label = `${company} Stock Prices`;
+            chart.data.datasets[0].data = newData.data;
+            chart.update(); // Refresh the chart
+        }
+
+        function next_period(){
+            modal = document.getElementById("m")
+            modal.style.display = "block";
+            fetch('/advance', {
+                headers:{
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Advance response:', data);
+                if (data.game_over) {
+                    modal.style.display = "none";
+                    alert(`Game Over! Final Balance: $${data.final_balance}`);
+                    fetch('/end_game')
+                    .then(response => response.text())
+                    .then(data => {
+                        window.location.href = "/menu"
+                    })
+                    // Optionally redirect to a game over screen or reset the game
+                }
+                else{
+                    setTimeout(function() {
+                        console.log("Waited for 3 seconds");
+                        // Do something after the delay here
+                    }, 3000);
+                    modal.style.display = "none";   
+                }
+            })
+
+            //update chart
+            //manually push global period up 1
+            //update headline, comments, and likes
+
+        }
+
+
+
+        // Event listener for radio buttons
+        document.querySelectorAll('input[name="dataSet"]').forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                updateChart(event.target.value);
+            });
+        });
+
+
         fetch('../templates/objects/company_radio.html')
             .then(response => response.text())
             .then(data => {
@@ -159,7 +457,19 @@
             updateDisplay();
         });
 
+        function displayCompany(company) {
+            //given a company name, changes the chart, market values, market title, headline, comments, likes, and resets the counter
+        }
+
+        function updateFinancials() {
+            //updates user's cash value, asset value, net worth, and net profit
+        }
+
+        // when session is grabbed for the first time intialize mini dict that relative ints 1-10 for coampny names
+
         updateDisplay();
+
+        
     </script>
 </body>
 </html>
