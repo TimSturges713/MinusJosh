@@ -109,12 +109,8 @@ def generate_trend(data):
         )
         constants = response.text
         constants = constants.split(",")
-        for c in constants:
-            if c.isdigit():
-                if public_perception == 0:
-                    public_perception = int(c)
-                else:
-                    technical_impact = int(c)
+        public_perception = int(constants[0])
+        technical_impact = int(constants[1])
         return public_perception, technical_impact
 
     except Exception as e:
