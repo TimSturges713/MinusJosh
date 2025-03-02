@@ -2,6 +2,7 @@ from google import genai
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
+import random
 
 # Load environment variables from .env file
 load_dotenv()
@@ -53,8 +54,10 @@ def generate_data(company_data, company_name):
     except Exception as e:
         headline = "GEMINI AI RESPONSE FAILURE"
     (public_perception, technical_impact) = generate_trend(headline)
-    comment = generate_comment(headline, public_perception)
-    return headline, comment, public_perception, technical_impact
+    comments = []
+    for i in range(random.randint(3,5)):
+        comments[i] = generate_comment(headline, public_perception)
+    return headline, comments, public_perception, technical_impact
 
 
 
@@ -65,9 +68,9 @@ def generate_comment(headline, public_perception):
     - HEADLINE: ${headline}
     - PUBLIC_PERCEPTION: ${public_perception}
 
-    Write 3-5 comments that may be made from viewers online looking at the headline's story.
-    These comments will align with the public's perception and accurately describe how they feel.
-    Depending on how aligned these comments are with the public's views, the more likes they'll have.
+    Write a comment that may be made from viewers online looking at the headline's story.
+    This comment will align with the public's perception and accurately describe how they feel.
+    Depending on how aligned this comment is with the public's views, the more likes they'll have.
     Format this answer into a JSON object with comment and likes as the two attributes in the object.
     """
     try:
