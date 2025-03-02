@@ -24,9 +24,7 @@ app.secret_key = os.getenv("SESSION_KEY")  # Required for session handling
 def get_session():
     """Retrieve session data for frontend"""
     return jsonify({
-        "user": temp_dict["user"],
-        "current_period": temp_dict["current_period"],
-        "companies": temp_dict["companies"],
+        "session": temp_dict
         })
 
 # to update session data
@@ -106,7 +104,6 @@ def start_game():
 @app.route("/game")
 def game_page():
     return render_template("game.html")  # Serve game.html
-
 
 # End game
 @app.route("/end_game")
