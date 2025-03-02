@@ -131,9 +131,9 @@ def gemini_create_industries() -> list:
         return "GEMINI AI RESPONSE FAILURE"
 
 # Create a list of industries
-industries = gemini_create_industries()
-random.shuffle(industries)
-industries = industries[:5] # Limit to 15 industries
+# industries = gemini_create_industries()
+# random.shuffle(industries)
+# industries = industries[:5] # Limit to 15 industries
 
 # Connect to SQLite database (creates the file if not exists)
 conn = sqlite3.connect(db_name)
@@ -190,13 +190,13 @@ conn.commit()
 
 
 # Insert industries into the table
-cursor.executemany("INSERT OR IGNORE INTO industry (name) VALUES (?)", [(industry,) for industry in industries])
+# cursor.executemany("INSERT OR IGNORE INTO industry (name) VALUES (?)", [(industry,) for industry in industries])
 
 # Commit changes
-conn.commit()
+# conn.commit()
 
-cursor.execute("SELECT id, name FROM industry")
-industry_data = {name: id for id, name in cursor.fetchall()}  # Dictionary mapping industry name to ID
+# cursor.execute("SELECT id, name FROM industry")
+# industry_data = {name: id for id, name in cursor.fetchall()}  # Dictionary mapping industry name to ID
 
 
 cursor.execute("""
@@ -210,15 +210,15 @@ CREATE TABLE IF NOT EXISTS headlines (
     FOREIGN KEY (industry_id) REFERENCES industry(id)
 )""")
 
-for industry in industries:
-    industry_id = industry_data.get(industry)  # Get industry ID
-    headlines = gemini_create_prompts(industry)
-    for prompt in headlines:
-        details = gen_details(prompt)
-        (public_perception, technical_impact) = generate_trend(prompt)
-        cursor.execute("INSERT OR IGNORE INTO headlines (industry_id, headline, public_perception, technical_impact, details) VALUES (?, ?, ?, ?, ?)", (industry_id, prompt, public_perception, technical_impact, details))
-        conn.commit()
-        gen_extra_details(conn, prompt, public_perception)
+# for industry in industries:
+#     industry_id = industry_data.get(industry)  # Get industry ID
+#     headlines = gemini_create_prompts(industry)
+#     for prompt in headlines:
+#         details = gen_details(prompt)
+#         (public_perception, technical_impact) = generate_trend(prompt)
+#         cursor.execute("INSERT OR IGNORE INTO headlines (industry_id, headline, public_perception, technical_impact, details) VALUES (?, ?, ?, ?, ?)", (industry_id, prompt, public_perception, technical_impact, details))
+#         conn.commit()
+#         gen_extra_details(conn, prompt, public_perception)
 
 # Commit changes and close the connectio
 conn.commit()
@@ -245,6 +245,10 @@ def gen_companies():
 
     # Close the database connection
     for industry in industries:
+        cursor.execute(""" SELECT id FROM industry WHERE name = ? """, (industry,))
+        industry_id = cursor.fetchone()[0]
+        if industry_id < 48:
+            continue
         prompt = f"""
         Make a list of 4 random made-up companies (with one word names less than 30 characters). All 4 companies should be  in the industry of {industry}.
         Each company needs to have their stock market acronym, their respective stock costs, and the number of their employees.
@@ -263,8 +267,6 @@ def gen_companies():
             generated_text = response.text
             data = json.loads(generated_text)
 
-            cursor.execute(""" SELECT id FROM industry WHERE name = ? """, (industry,))
-            industry_id = cursor.fetchone()[0]
             
             for company in data['companies']:
                 cursor.execute("""

@@ -10,7 +10,8 @@ from stock_data import get_stock_trends
 
 # Load environment variables from .env file
 load_dotenv()
-db_name = "small_db.db"
+# db_name = "small_db copy.db"
+db_name = "chat_db.db"
 backup_file = "backup.txt"
 connx = None
 
@@ -239,12 +240,12 @@ class CompanyFull(BaseModel):
 class GameStart(BaseModel):
     companies: list[CompanyFull]
 
-def getPeriodData(per_dat, price):
+def getPeriodData(per_dat, price): # Perdat 0 = headline, 1 = details, 2 = public_perception, 3 = technical_impact, 4 = id
     res = dict()
     for i in range(1, 11):
         p = price
         res[i] = dict()
-        a, b = stock_data(p, per_dat["public_perception"], per_dat["technical_impact"])
+        a, b = get_stock_trends(p, per_dat[2], per_dat[3])
         res[i]["next_price"] = b
         res[i]["datapoint1"] = a[0]
         res[i]["datapoint2"] = a[1]
@@ -262,41 +263,58 @@ def getPeriodData(per_dat, price):
 
 def game_start_gen():
     periods = dict()
+    for i in range(1, 11):
+        periods[i] = dict()
+
     stocks = dict()
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
 
     # SQL query to fetch 4 random industries
-    cursor.execute("SELECT id FROM industry ORDER BY RANDOM() LIMIT 4;")
+    cursor.execute("SELECT id, name FROM industry ORDER BY RANDOM() LIMIT 4;")
 
     industries = cursor.fetchall()
 
-    industry_map = {row[0]: idx for idx, row in enumerate(industries)}
+    industry_map = {row[0]: row[1] for idx, row in enumerate(industries)}
 
     # Select 4 unique industries
     random_selection = random.sample(list(industry_map.keys()), 4)
 
     for index, industry_id in enumerate(random_selection):
-        limit = 3 if index in [0, 2] else 2
-        cursor.execute("""
-            SELECT company_name, starting_price, employee_amt, stock_name
-            FROM company 
-            WHERE industry_id = ? 
-            ORDER BY RANDOM() 
-            LIMIT ?;
-        """, (industry_id, limit))
+        x = 0
+        if index in [0, 2]:
+            limit = 3
+            industry_id = int(industry_id)
+            cursor.execute("""
+                SELECT company_name, starting_price, employee_amt, stock_name
+                FROM company 
+                WHERE industry_id = ?
+                ORDER BY RANDOM() 
+                LIMIT 3;
+            """, (industry_id,))
+        else:
+            limit = 2
+            cursor.execute(f"""
+                SELECT company_name, starting_price, employee_amt, stock_name
+                FROM company 
+                WHERE industry_id = ?
+                ORDER BY RANDOM() 
+                LIMIT 2;
+            """, (industry_id,))
 
         # Fetch companies
         companies = cursor.fetchall()
-        
-        cursor.execute("""
-        SELECT headline, details, public_perception, technical_impact, id FROM headlines WHERE industry_id = ? ORDER BY RANDOM() LIMIT ?
-        """, (industry_id, 10*limit,))
-        per_dat = cursor.fetchall()
 
-        # Store in dictionary
-        x = 0
+        cursor.execute(f"""
+        SELECT headline, details, public_perception, technical_impact, id FROM headlines WHERE industry_id = ? ORDER BY RANDOM()
+        """, (industry_id,))
+        
+        per_dat = [tuple(row) for row in cursor.fetchall()]  # Convert fetched rows into a list of tuples
+        print(f"PERDATY {industry_map[industry_id]} OF : {per_dat}")
+
+        # Store in dictionary$$$$$ headline, details, public_perception, technical_impact, id
         for company in companies:
+            print(f"PERDANTED is ")
             stocks[company[0]] = {
                 "start_price": company[1],
                 "emp_amt": company[2],
@@ -305,37 +323,37 @@ def game_start_gen():
             }
             price = company[1]
             for i in range(1, 11):
-                data = getPeriodData(per_dat[x], price)
+                last_value = per_dat.pop()
+                data = getPeriodData(last_value, price)
+                print(f" LAST VALUE OF CURRENT IS {last_value}")
                 cursor.execute("""
                 SELECT comment, likes FROM comment WHERE headline_id = ?
-                """, (per_dat[x][4],))
+                """, (last_value[4],))
                 comments = cursor.fetchall()
 
                 periods[i][company[0]] = {
                     "curr_price": price,
                     "next_price": data[i]["next_price"],
-                    "headline": per_dat[x*i + i][0],
-                    "detail": per_dat[x*i + i][1],
-                    "comments": { "1": {"comment": comments[0]["comment"], "likes": comments[0]["likes"]}, 
-                                  "2": {"comment": comments[1]["comment"], "likes": comments[1]["likes"]},
-                                  "3": {"comment": comments[2]["comment"], "likes": comments[2]["likes"]}, 
+                    "headline": last_value[0],
+                    "detail": last_value[1],
+                    "comments": { "1": {"comment": comments[0][0], "likes": comments[0][1]}, 
+                                  "2": {"comment": comments[1][0], "likes": comments[1][1]},
+                                  "3": {"comment": comments[2][0], "likes": comments[2][1]}, 
                                 },
                     "datapoints": {
-                                    "1": data[i]["datapoint1"],
-                                    "2": data[i]["datapoint2"],
-                                    "3": data[i]["datapoint3"],
-                                    "4": data[i]["datapoint4"],
-                                    "5": data[i]["datapoint5"],
-                                    "6": data[i]["datapoint6"],
-                                    "7": data[i]["datapoint7"],
-                                    "8": data[i]["datapoint8"],
-                                    "9": data[i]["datapoint9"],
-                                    "10": data[i]["datapoint10"]
+                                    1: data[i]["datapoint1"],
+                                    2: data[i]["datapoint2"],
+                                    3: data[i]["datapoint3"],
+                                    4: data[i]["datapoint4"],
+                                    5: data[i]["datapoint5"],
+                                    6: data[i]["datapoint6"],
+                                    7: data[i]["datapoint7"],
+                                    8: data[i]["datapoint8"],
+                                    9: data[i]["datapoint9"],
+                                    10: data[i]["datapoint10"]
                     }
                 }
-                price = data[i]["next_price"]
-            x += 1
-            
+                price = data[i]["next_price"]            
 
     # Close the database connection
     conn.close()

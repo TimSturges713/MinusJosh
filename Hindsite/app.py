@@ -8,6 +8,7 @@ from stock_data import get_stock_trends
 from test import *
 import os
 from dotenv import load_dotenv
+import json
 
 # Load environment variables from .env file
 load_dotenv()
@@ -43,25 +44,30 @@ def initialize_game(username):
     session["user"] = {
     "username": username,
     "balance": 10000,
-    "portfolio": {}
+    "portfolio": dict()
     }
-    session["companies"] = dict()
 
     ### Initialize companies
     periods, stocks = game_start_gen()
-    for res in stocks:
-        session["companies"][res["name"]] = res
 
-    # Company data structure setup
-    # session["companies"][company_name]["name"] = company_name # ik its redundant but its here so deal w/ it
-    # session["companies"][company_name]["price"] = current_stock_cost
-    # session["companies"][company_name]["employees"] = num_of_employees
-    # session["companies"][company_name]["stock_name"] = acronym
-    # }
+    session["companies"] = dict()
+    for res in stocks.keys():
+        # print(f"\n\n\t\t\t\tTESTING HERE:{res}!!!!!\n")
+        session["companies"][res] = dict()
+        # print(f"TESTING HERE:{res} : ->>> {stocks[res]}")
+        session["companies"][res] = stocks[res]
+
+    for z in range(1, 11):
+        # print(f"SECOANDLARY : z={z} : ->>> {periods}")
+        session[z] = periods[z]
+    # for res in stocks.keys():
+        # print(f"\n\n{res}")    
+        # print(session[1][res]) 
 
     # Initialize user portfolio
-    for company in session["companies"].keys():    
-        session["user"]["portfolio"][company] = { 
+    for res in stocks.keys():
+        session["user"]["portfolio"][res] = dict()
+        session["user"]["portfolio"][res] = { 
                                             "amount": 0, 
                                             "spent": 0,
                                             "earned": 0 
