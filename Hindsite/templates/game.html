@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game UI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='company_radio_styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='game_style.css') }}">
         <!--  Chart.js for displaying graphical data  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,7 +12,7 @@
 <!DOCTYPE html>
 <html lang="en">
 </head>
-<body>
+<body style="background:#5a9156;">
     <div class="container">
         <div class="screen">
             <div class="center">
@@ -396,18 +397,6 @@
                 updateChart(event.target.value);
             });
         });
-
-
-        // fetch('../templates/objects/company_radio.html')
-        //     .then(response => response.text())
-        //     .then(data => {
-        //         document.getElementById('radio-placeholder').innerHTML = data;
-        //     });
-        // fetch('graph location here')
-        //     .then(response => response.text())
-        //     .then(data => {
-        //         document.getElementById('graph-placeholder').innerHTML = data;
-        //     });
 
         let counter = 0;
         let multiplier = 1;
