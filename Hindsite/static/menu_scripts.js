@@ -15,7 +15,7 @@ function startGame(gamemode) {
     .then(response => response.text())  // Change to text() since Flask returns an HTML page
     .then(() => {
         console.log('Game started');
-        window.location.href = "/game";  // Redirect to game.html
+        window.location = "/start_game";  // Redirect to game.html
     })
     .catch((error) => {
         console.error('Error starting game:', error);
