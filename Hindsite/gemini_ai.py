@@ -139,7 +139,10 @@ def game_start_gen():
     Then list the company's names and their stock prices and their acronym in a JSON object. The stock price is between 1 cent and 1000 dollars.
     """
     try:
-        response = client.models.generate_content(prompt)
+        response = client.models.generate_content(
+            model='gemini-2.0-flash', 
+            contents=prompt
+        )
         generated_text = response.text
         data = json.loads(generated_text)
         return data
