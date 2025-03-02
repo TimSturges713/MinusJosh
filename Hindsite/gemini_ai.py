@@ -18,6 +18,10 @@ class Comment(BaseModel):
     comment: str
     likes: int
 
+class Company(BaseModel):
+    name: str
+    stock_value: float
+    stock_acronym: str
 
 
 # Generate AI headlines for company stories
@@ -130,19 +134,20 @@ def generate_trend(data):
 def game_start_gen():
     stocks = dict()
     prompt = f"""
-    Retrieve ten random well-known companies (with one word names) on the stock market, their stock market acronym and their respective costs.
-    Randomly offset these companies stock prices by about 1-10% of their current value, raising it or lowering it.
-    Then list the company's names and their offset stock prices. List them with nothing else other than separating company
-    name, stock value, and stock acronym by a comma. Each new line is a different company and each line ends with a comma.
+    Retrieve ten random made-up companies (with one word names, limit to 13 characters), their stock market acronym and their respective stock costs.
+    Then list the company's names and their stock prices and their acronym in a JSON object. The stock price is between 1 cent and 1000 dollars.
     """
     try:
         response = client.models.generate_content(
             model='gemini-2.0-flash', 
-            contents=prompt
+            contents=prompt,
+            config={
+            'response_mime_type': 'application/json',
+            'response_schema': Company,
+            },
         )
         stock = response.text
-        stock = stock.split(",")
-        flag = 0
+        stock = stock.strip().split(",")
         for c in range(0, len(stock), 3):
             stocks[stock[c]] = {stock[c+1]: stock[c+2]}
         return stocks
