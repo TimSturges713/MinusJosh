@@ -189,10 +189,10 @@ def generate_neg_comment(headline, public_perception, old_comments):
             },
         )
         comment = response.parsed
-        if isinstance(coomment.likes, str):
+        if isinstance(comment.likes, str):
             comment.likes = int(comment.likes)
     except (ValueError, TypeError):
-        commend = Commend(comment="erorr generatedfsgtewrds", likes=0)
+        commend = Comment(comment="erorr generatedfsgtewrds", likes=0)
     except Exception as e:
         with open(backup_file, "w") as f:
             # Use .dump to write database contents to file
